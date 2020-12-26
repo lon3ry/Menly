@@ -78,7 +78,6 @@ module.exports = (bot, commandOptions) => {
 
     const guildData = await GuildSchema.findOne({ guildId: `${guild.id}` });
     let { prefix, commandChannel } = guildData;
-
     for (const alias of commands) {
       if (content.toLowerCase().startsWith(`${prefix}${alias.toLowerCase()}`)) {
         const adminGroups = ['Moderation', 'embeds', 'settings', 'Shop'];

@@ -108,6 +108,17 @@ module.exports = {
       const target = message.mentions.members.first();
       const ammount = args[1];
 
+
+      if (target == message.member) {
+        await message.react('🚫');
+        const embed = new Discord.MessageEmbed()
+          .setColor('0085FF')
+          .setDescription(`:no_entry_sign: ${message.author}, **невозможно** сыграть дуэль с самим собой!`)
+          .setTitle(':crossed_swords: Дуэль :crossed_swords:')
+        await message.author.send(embed);
+        return;
+      }
+
       let { coins: authorCoins } = await MemberSchema.findOne({ userId: `${message.author.id}`, guildId: `${message.guild.id}` });
       let { coins: targetCoins } = await MemberSchema.findOne({ userId: `${target.id}`, guildId: `${message.guild.id}` });
 
