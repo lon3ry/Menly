@@ -29,5 +29,6 @@ module.exports = async (bot) => {
 
   } catch (err) {
     console.log('[CHECK-DATA][ERROR]', err);
+    return;
   }
 }

@@ -9,7 +9,7 @@ bot.config = require('./config.json');
 bot.on('ready', async () => {
 	console.log(`Successfully logged in as ${bot.user.tag}`);
 	await mongo();
-	await checkData(bot);
+	// await checkData(bot);
 	loadCommands(bot);
 	loadFeatures(bot);
 	await bot.user.setPresence({
