@@ -47,6 +47,7 @@ class duelGame {
       if (reaction.emoji.name == '☑️') {
         await this.gameProcess();
         this.reacted = true;
+        await inviteMessage.delete();
       } else if (reaction.emoji.name == '❌') {
         const embed = new Discord.MessageEmbed()
           .setColor('0085FF')
@@ -54,6 +55,7 @@ class duelGame {
           .setTitle(':crossed_swords: Дуэль :crossed_swords:')
         await this._firstPlayer.send(embed);
         this.reacted = true;
+        await inviteMessage.delete();
       }
     });
   }
@@ -102,6 +104,7 @@ class duelGame {
 module.exports = {
   commands: ['duels', 'flipduel', 'coinduel'],
   group: 'Economy',
+  usage: '<@member> <ammount>',
   description: 'Дуэль 1 на 1 с участником сервера',
   callback: async (message, args, text, bot) => {
     try {
@@ -123,6 +126,7 @@ module.exports = {
       let { coins: targetCoins } = await MemberSchema.findOne({ userId: `${target.id}`, guildId: `${message.guild.id}` });
 
       if (targetCoins < ammount) {
+        await message.react('🚫');
         const embed = new Discord.MessageEmbed()
           .setColor('0085FF')
           .setDescription(`:no_entry_sign: У ${target} **недостаточно коинов** чтобы сыграть дуэль с ставкой в **${ammount}** коинов`)
@@ -132,6 +136,7 @@ module.exports = {
       }
 
       if (authorCoins < ammount) {
+        await message.react('🚫');
         const embed = new Discord.MessageEmbed()
           .setColor('0085FF')
           .setDescription(`:no_entry_sign: ${message.author}, у вас недостаточно средств чтобы предложить сыграть дуэль со суммой ставки **${ammount}** коинов`)

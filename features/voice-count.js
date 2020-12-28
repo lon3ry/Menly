@@ -1,7 +1,6 @@
 const MemberSchema = require(`../schemas/member-schema.js`);
 const GuildSchema = require(`../schemas/guild-schema.js`);
-const { startCount, stopCount } = require('../utils/voicefunc.js');
-const { getCountStatus } = require('../utils/dbfuncs.js');
+const { getCountStatus, startCount, stopCount } = require('../utils/voicefunc.js');
 
 module.exports = (bot) => {
   bot.on('voiceStateUpdate', async (oldState, newState) => {

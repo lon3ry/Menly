@@ -56,33 +56,4 @@ module.exports = (bot) => {
       }
     }, {})
   });
-
-
-  bot.on('guildCreate', async (guild) => {
-    const guildData = new GuildSchema({
-      guildId: `${guild.id}`,
-      prefix: '!',
-      afkChannel: `${guild.afkChannelID}`,
-    });
-    guildData.save();
-    await bot.user.setPresence({
-      status: 'online',
-      activity: {
-        name: `за ${bot.guilds.cache.size} серверами | !invite`,
-        type: 'WATCHING',
-      }
-    });
-  });
-
-
-  bot.on('guildDelete', async (guild) => {
-    await GuildSchema.findOneAndDelete({ guildId: `${guild.id}` });
-    await bot.user.setPresence({
-      status: 'online',
-      activity: {
-        name: `за ${bot.guilds.cache.size} серверами | !invite`,
-        type: 'WATCHING',
-      }
-    });
-  });
 }
