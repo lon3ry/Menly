@@ -2,4 +2,3 @@ node_modules/
 package-lock.json
 package.json
 config.json
-commands/economy/daily.js
