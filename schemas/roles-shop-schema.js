@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
-const ShopSchema = new Schema({
-    guildId: {
+const RolesShopSchema = new Schema({
+    guildID: {
         type: String,
         required: true
     },
@@ -30,4 +30,4 @@ const ShopSchema = new Schema({
     }
 });
 
-module.exports = model('shops', ShopSchema);
+module.exports = model('roles-shops', RolesShopSchema);

@@ -4,7 +4,7 @@ const MemberSchema = require('../../schemas/member-schema.js');
 const updateDb = async (target, category, ammount) => {
   let query = {};
   query[`${category}`] = -ammount;
-  const result = await MemberSchema.findOneAndUpdate( {userId: `${target.id}`, guildId: `${target.guild.id}`}, {$inc: query});
+  const result = await MemberSchema.findOneAndUpdate( {userID: `${target.id}`, guildID: `${target.guild.id}`}, {$inc: query});
   return result;
 }
 

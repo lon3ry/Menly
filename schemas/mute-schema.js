@@ -1,11 +1,11 @@
 const { Schema, model } = require('mongoose');
 
 const MuteSchema = new Schema({
-    userId: {
+    userID: {
         type: String,
         required: true
     },
-    guildId: {
+    guildID: {
         type: String,
         required: true
     },
@@ -21,6 +21,11 @@ const MuteSchema = new Schema({
     staffId: {
         type: String,
         required: true
+    },
+    staffID: {
+        type: String,
+        required: false,
+        default: '123'
     },
     muteStarted: {
         type: Date,

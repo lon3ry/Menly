@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const ShopSchema = require('../../schemas/shop-schema.js');
+const RolesShopSchema = require('../../schemas/roles-shop-schema.js');
 
 module.exports = {
   commands: ['deleteshop', 'delete-shop', 'delete_shop'],
@@ -13,7 +13,7 @@ module.exports = {
     try {
       
       const category = args[0];
-      const data = await ShopSchema.findOne({ guildId: `${message.guild.id}` });
+      const data = await RolesShopSchema.findOne({ guildID: `${message.guild.id}` });
       
       if (data == null) {
         const embed = new Discord.MessageEmbed()
@@ -34,14 +34,14 @@ module.exports = {
         }
 
         const roleToDelete = message.mentions.roles.first();
-        const { roles } = await ShopSchema.findOne({ guildId: `${message.guild.id}` });
+        const { roles } = await RolesShopSchema.findOne({ guildID: `${message.guild.id}` });
 
         if (roles == null) {
           return;
         }
         
-        await ShopSchema.updateOne({ 
-          guildId: `${message.guild.id}` 
+        await RolesShopSchema.updateOne({ 
+          guildID: `${message.guild.id}` 
         }, {
           $pull: {
             roles: {
@@ -50,7 +50,7 @@ module.exports = {
           }
         });
 
-        await ShopSchema.deleteOne({ guildId: `${message.guild.id}`} );
+        await RolesShopSchema.deleteOne({ guildID: `${message.guild.id}`} );
         const embed = new Discord.MessageEmbed()
           .setColor('0085FF')
           .setDescription(`:ballot_box_with_check: Роль ${roleToDelete} успешно удалена с магазина`)
@@ -59,7 +59,7 @@ module.exports = {
         console.log(`[${message.guild.name}][DELETE-SHOP][SUCCES] role with name ${roleToDelete.name} deleted from shop`);
 
       } else if (category == 'all') {
-        await ShopSchema.deleteOne({ guildId: `${message.guild.id}`} );
+        await RolesShopSchema.deleteOne({ guildID: `${message.guild.id}`} );
         const embed = new Discord.MessageEmbed()
           .setColor('0085FF')
           .setDescription(`:ballot_box_with_check: ${message.author}, магазин успешно удалён`)

@@ -32,8 +32,8 @@ module.exports = (bot) => {
       return xpNeeded;
     }
     const result = await MemberSchema.findOneAndUpdate({
-      userId: `${member.id}`,
-      guildId: `${guild.id}`
+      userID: `${member.id}`,
+      guildID: `${guild.id}`
     }, {
       $inc: {
         xp: 5,
@@ -42,18 +42,19 @@ module.exports = (bot) => {
       }
     }, { new: true, upsert: true });
 
+
     let { level, xp } = result;
     const xpToLevel = needXp(level);
     if (xp >= xpToLevel) {
       level++;
     }
     await MemberSchema.findOneAndUpdate({
-      userId: `${member.id}`,
-      guildId: `${guild.id}`
+      userID: `${member.id}`,
+      guildID: `${guild.id}`
     }, {
       $set: {
         level: level
       }
-    }, {})
+    }, {});
   });
 }

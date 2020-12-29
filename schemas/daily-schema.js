@@ -1,11 +1,11 @@
 const { Schema, model } = require('mongoose');
 
 const dailyRewardsSchema = new Schema({
-  guildId: {
+  guildID: {
     type: String,
     required: true
   },
-  userId: {
+  userID: {
     type: String,
     required: true
   },

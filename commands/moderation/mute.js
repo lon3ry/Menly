@@ -38,7 +38,7 @@ module.exports = {
       }
 
       const timeNow = new Date();
-      const { muteRole: muteRoleId } = await GuildSchema.findOne({ guildId: `${guild.id}` });
+      const { muteRole: muteRoleID } = await GuildSchema.findOne({ guildID: `${guild.id}` });
       console.log('MUTE TIME:', timeNow, expires);
       if (muteRoleId == 'undefined') {
         await message.react('🚫');
@@ -49,13 +49,13 @@ module.exports = {
         return;
       }
 
-      const muteRole = guild.roles.cache.get(muteRoleId);
+      const muteRole = guild.roles.cache.get(muteRoleID);
       await target.roles.add(muteRole);
       await new MuteSchema({
-        userId: `${target.user.id}`,
-        guildId: `${guild.id}`,
+        userID: `${target.user.id}`,
+        guildID: `${guild.id}`,
         staffTag: `${staff.tag}`,
-        staffId: `${staff.id}`,
+        staffID: `${staff.id}`,
         muteStarted: timeNow,
         muteEnded: expires,
         active: true,

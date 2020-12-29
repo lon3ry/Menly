@@ -1,23 +1,23 @@
 const MemberSchema = require('../schemas/member-schema.js');
 
 async function getCountStatus(member) {
-  const inDbStatus = await MemberSchema.countDocuments({ userId: `${member.id}`, guildId: `${member.guild.id}` });
+  const inDbStatus = await MemberSchema.countDocuments({ userID: `${member.id}`, guildID: `${member.guild.id}` });
   if (inDbStatus == 0) {
     const memberData = new MemberSchema({
-      userId: `${member.id}`,
-      guildId: `${member.guild.id}`
+      userID: `${member.id}`,
+      guildID: `${member.guild.id}`
     })
     await memberData.save();
     return 'stop'
   }
-  const { countStatus } = await MemberSchema.findOne({ userId: `${member.id}`, guildId: `${member.guild.id}` });
+  const { countStatus } = await MemberSchema.findOne({ userID: `${member.id}`, guildID: `${member.guild.id}` });
   return countStatus;
 }
 
 async function startCount(member) {
   let timeNow = new Date()
   const results = await MemberSchema.findOneAndUpdate(
-    { userId: `${member.id}`, guildId: `${member.guild.id}` }, {
+    { userID: `${member.id}`, guildID: `${member.guild.id}` }, {
     $set: {
       timeJoin: timeNow,
       countStatus: 'start'
@@ -27,7 +27,7 @@ async function startCount(member) {
 }
 
 async function stopCount(member) {
-  const memberStats = await MemberSchema.findOne({ userId: `${member.id}`, guildId: `${member.guild.id}` });
+  const memberStats = await MemberSchema.findOne({ userID: `${member.id}`, guildID: `${member.guild.id}` });
   const { timeJoin } = memberStats;
   const timeNow = new Date();
 
@@ -44,7 +44,7 @@ async function stopCount(member) {
   }
 
   const results = await MemberSchema.findOneAndUpdate(
-    { userId: `${member.id}`, guildId: `${member.guild.id}` }, {
+    { userID: `${member.id}`, guildID: `${member.guild.id}` }, {
     $inc: {
       coins: timeAll,
       minVoice: timeAll,

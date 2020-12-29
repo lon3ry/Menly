@@ -76,7 +76,7 @@ module.exports = (bot, commandOptions) => {
       return;
     }
 
-    const guildData = await GuildSchema.findOne({ guildId: `${guild.id}` });
+    const guildData = await GuildSchema.findOne({ guildID: `${guild.id}` });
     let { prefix, commandChannel } = guildData;
     for (const alias of commands) {
       if (content.toLowerCase().startsWith(`${prefix}${alias.toLowerCase()}`)) {
@@ -118,9 +118,10 @@ module.exports = (bot, commandOptions) => {
         if (arguments.length < minArgs || (maxArgs !== null && arguments.length > maxArgs)) {
           try {
             message.delete(message);
+            const commandUsage = usage ? ` ${usage}` : ''
             let embed = new Discord.MessageEmbed()
               .setColor('0085FF')
-              .setDescription(`:no_entry_sign: **Неправильный синтаксис!** Используйте **\`\`${prefix}${alias} ${usage}\`\`** чтобы воспользоваться данной командой!`)
+              .setDescription(`:no_entry_sign: **Неправильный синтаксис!** Используйте **\`\`${prefix}${alias}${usage}\`\`** чтобы воспользоваться данной командой!`)
               .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
             message.channel.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
             return;

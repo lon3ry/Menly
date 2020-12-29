@@ -21,7 +21,7 @@ module.exports = {
         return;
       }
 
-      const targetMute = await MuteSchema.findOne({ userId: `${target.id}`, guildId: `${guild.id}`, active: true });
+      const targetMute = await MuteSchema.findOne({ userID: `${target.id}`, guildID: `${guild.id}`, active: true });
 
       if (!targetMute) {
         console.log('User already unmuted');
@@ -32,9 +32,9 @@ module.exports = {
         return;
       }
 
-      await MuteSchema.deleteOne({ userId: `${target.id}`, guildId: `${guild.id}`, active: true });
-      const { muteRole: muteRoleId } = await GuildSchema.findOne({ guildId: `${guild.id}` });
-      const muteRole = guild.roles.cache.get(muteRoleId);
+      await MuteSchema.deleteOne({ userID: `${target.id}`, guildID: `${guild.id}`, active: true });
+      const { muteRole: muteRoleID } = await GuildSchema.findOne({ guildID: `${guild.id}` });
+      const muteRole = guild.roles.cache.get(muteRoleID);
       await target.roles.remove(muteRole);
       let embed = new Discord.MessageEmbed()
         .setColor('0085FF')

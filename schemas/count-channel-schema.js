@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const CounterSchema = new Schema({
-  guildId: {
+  guildID: {
     type: String,
     required: true
   },
@@ -19,4 +19,4 @@ const CounterSchema = new Schema({
   }
 });
 
-module.exports = model('counters', CounterSchema);
+module.exports = model('count-channels', CounterSchema);

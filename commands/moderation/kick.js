@@ -21,7 +21,7 @@ module.exports = {
         await message.channel.send(embed);
         return;
       }
-      
+
       let embed = new Discord.MessageEmbed()
         .setColor('0085FF')
         .setTitle('Блокировка')
@@ -32,7 +32,7 @@ module.exports = {
       await target.kick();
       await message.react('☑️');
       console.log(`[${message.guild.name}][KICK][SUCCES] kicked ${target.displayName}`);
-      
+
     } catch {
       return;
     }

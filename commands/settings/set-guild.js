@@ -5,7 +5,7 @@ const updateDb = async (guild, category, value) => {
   let query = {};
   query[`${category}`] = value;
   const result = await GuildSchema.findOneAndUpdate({ 
-    guildId: `${guild.id}` 
+    guildID: `${guild.id}` 
   },{
     $set: query
   });
@@ -38,7 +38,7 @@ module.exports = {
           return;
         }
   
-        const result = await GuildSchema.findOneAndUpdate({ guildId: `${guild.id}` }, { $set: { afkChannel: `${guild.afkChannel.id}` } });
+        const result = await GuildSchema.findOneAndUpdate({ guildID: `${guild.id}` }, { $set: { afkChannel: `${guild.afkChannel.id}` } });
         console.log(`[AFK-CHANNEL][SUCCES] changed afk-channel for ${guild.name}`, result);
   
       } else if (category == 'prefix') {

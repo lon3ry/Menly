@@ -3,7 +3,7 @@ const MemberSchema = require('../../schemas/member-schema.js');
 class duelGame {
   reacted = false;
 
-  constructor (bot, players, ammount, channel) {
+  constructor(bot, players, ammount, channel) {
     this._bot = bot;
     this._firstPlayer = players[0];
     this._secondPlayer = players[1];
@@ -31,7 +31,7 @@ class duelGame {
     console.log('getting answer', this._bot.user.tag);
     this.reacted = false;
 
-    this._bot.on('messageReactionAdd', async (reaction, user) => { 
+    this._bot.on('messageReactionAdd', async (reaction, user) => {
       if (this.reacted) {
         return;
       }
@@ -75,7 +75,7 @@ class duelGame {
     const winner = results[0];
     const loser = results[1];
     await MemberSchema.updateOne({
-      guildId: `${winner.guild.id}`, userId: `${winner.id}`
+      guildID: `${winner.guild.id}`, userID: `${winner.id}`
     }, {
       $inc: {
         coins: this._ammount
@@ -83,7 +83,7 @@ class duelGame {
     });
 
     await MemberSchema.updateOne({
-      guildId: `${loser.guild.id}`, userId: `${loser.id}`
+      guildID: `${loser.guild.id}`, userID: `${loser.id}`
     }, {
       $inc: {
         coins: -this._ammount
@@ -109,7 +109,7 @@ module.exports = {
   callback: async (message, args, text, bot) => {
     try {
       const target = message.mentions.members.first();
-      const ammount = args[1];
+      const ammount = Math.trunc(args[1]);
 
 
       if (target == message.member) {
@@ -122,8 +122,8 @@ module.exports = {
         return;
       }
 
-      let { coins: authorCoins } = await MemberSchema.findOne({ userId: `${message.author.id}`, guildId: `${message.guild.id}` });
-      let { coins: targetCoins } = await MemberSchema.findOne({ userId: `${target.id}`, guildId: `${message.guild.id}` });
+      let { coins: authorCoins } = await MemberSchema.findOne({ userID: `${message.author.id}`, guildID: `${message.guild.id}` });
+      let { coins: targetCoins } = await MemberSchema.findOne({ userID: `${target.id}`, guildID: `${message.guild.id}` });
 
       if (targetCoins < ammount) {
         await message.react('🚫');

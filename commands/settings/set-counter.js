@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const CounterSchema = require('../../schemas/counter-schema.js');
+const CounterSchema = require('../../schemas/count-channel-schema.js');
 
 module.exports = {
   commands: ['setcounter', 'set-counter', 'set_counter'],
@@ -14,7 +14,7 @@ module.exports = {
 
       const { guild } = message;
       const category = args[0];
-      const data = await CounterSchema.findOne({ guildId: `${message.guild.id}` }); // find data
+      const data = await CounterSchema.findOne({ guildID: `${message.guild.id}` }); // find data
 
       if (!data) {
         const embed = new Discord.MessageEmbed()

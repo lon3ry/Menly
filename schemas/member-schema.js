@@ -1,11 +1,11 @@
 const { Schema, model }= require('mongoose');
 
 const MemberSchema = new Schema({
-    userId: {
+    userID: {
         type: String,
         required: true
     },
-    guildId: {
+    guildID: {
         type: String,
         required: true
     },

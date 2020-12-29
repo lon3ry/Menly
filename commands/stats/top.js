@@ -17,8 +17,8 @@ module.exports = {
       }
       let sort = {};
       sort[category] = -1;
-      const Stats = await MemberSchema.find({ guildId: `${message.guild.id}` }, null, { sort: sort, limit: 10 });
-      if (Stats.length < 10) {
+      const stats = await MemberSchema.find({ guildID: `${message.guild.id}` }, null, { sort: sort, limit: 10 });
+      if (stats.length < 10) {
         await message.delete(message);
         let embed = new Discord.MessageEmbed()
           .setColor('0085FF')
@@ -28,15 +28,15 @@ module.exports = {
       }
       let usersStats = [];
       let usersNames = [];
-      for (const stat of Stats) {
+      for (const stat of stats) {
         if (category == 'minVoice') {
           let hrs = stat[`${category}`] / 60;
           usersStats.push(parseFloat(hrs.toFixed(1)));
-          let user = message.guild.members.cache.get(stat['userId']);
+          let user = message.guild.members.cache.get(stat['userID']);
           usersNames.push(user.displayName);
         } else {
           usersStats.push(stat[`${category}`]);
-          let user = message.guild.members.cache.get(stat['userId']);
+          let user = message.guild.members.cache.get(stat['userID']);
           usersNames.push(user.displayName);
         }
       }

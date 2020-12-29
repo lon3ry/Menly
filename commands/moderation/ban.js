@@ -20,22 +20,22 @@ module.exports = {
           .setColor('0085FF')
           .setTitle('Блокировка')
           .setDescription(`:no_entry_sign: ${author}, укажите пользователя, которого следует заблокировать`)
-          .setAuthor(target.displayName, target.user.displayAvatarURL({dynamic:true}))
+          .setAuthor(target.displayName, target.user.displayAvatarURL({ dynamic: true }))
           .setTimestamp()
-        await message.channel.send(embed).then(message => {message.delete({ timeout: 5 * 1000})});
+        await message.channel.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
       }
-      
+
       await targetMember.ban();
       let embed = new Discord.MessageEmbed()
         .setColor('0085FF')
         .setTitle('Блокировка')
         .setDescription(`Вы были заблокированы на сервере **${target.guild.name}** пользователем **${message.author}**`)
-        .setAuthor(target.displayName, target.user.displayAvatarURL({dynamic:true}))
+        .setAuthor(target.displayName, target.user.displayAvatarURL({ dynamic: true }))
         .setTimestamp()
       await target.send(embed);
       await message.react('☑️');
       console.log(`[${message.guild.name}][BAN][SUCCES] banned ${target.displayName}`);
-      
+
     } catch {
       return;
     }

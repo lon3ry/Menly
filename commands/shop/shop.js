@@ -1,20 +1,19 @@
 const Discord = require('discord.js');
-const ShopSchema = require('../../schemas/shop-schema.js');
+const RolesShopSchema = require('../../schemas/roles-shop-schema.js');
 
 module.exports = {
   commands: ['shop', 'roles-shop', 'rolesshop'],
   group: 'Shop',
   description: 'Магазин ролей',
-  usage: '',
   permissionError: 'недостаточно прав',
   minArgs: 0,
   maxArgs: 0,
   callback: async (message, args, text, bot) => {
     try {
       
-      const ShopData = await ShopSchema.findOne({ guildId: `${message.guild.id}` });
+      const RolesShopData = await RolesShopSchema.findOne({ guildID: `${message.guild.id}` });
 
-      if (!ShopData) {
+      if (!RolesShopData) {
         await message.delete(message);
         const embed = new Discord.MessageEmbed()
           .setColor('0085FF')
@@ -23,7 +22,7 @@ module.exports = {
         return;
       }
 
-      const { message: ShopMessage, roles } = ShopData;
+      const { message: RolesShopMessage, roles } = RolesShopData;
 
       let numberEmoji = new Map()
         .set(1, '1️⃣')
@@ -49,7 +48,7 @@ module.exports = {
       const embed = new Discord.MessageEmbed()
         .setTitle('Магазин ролей')
         .setColor('0085FF')
-        .setDescription(`${ShopMessage.description}\n \n${rolesText}`)
+        .setDescription(`${RolesShopMessage.description}\n \n${rolesText}`)
         
       await message.delete(message);
       const botMessage = await message.channel.send(embed);
@@ -57,7 +56,7 @@ module.exports = {
         await botMessage.react(`${numberEmoji.get(reacted)}`)
       }
       
-      await ShopSchema.findOneAndUpdate({guildId: `${message.guild.id}`}, {
+      await RolesShopSchema.findOneAndUpdate({guildID: `${message.guild.id}`}, {
         $set: {
           message: {
             id: `${botMessage.id}`

@@ -11,7 +11,7 @@ module.exports = {
   callback: async (message, args, text, bot) => {
     try {
       let member = message.mentions.members.first() || message.member;
-      const Stats = await MemberSchema.findOne({ userId: `${member.id}`, guildId: `${member.guild.id}` });
+      const Stats = await MemberSchema.findOne({ userID: `${member.id}`, guildID: `${member.guild.id}` });
       const Embed = new Discord.MessageEmbed()
         .setAuthor(member.displayName, member.user.displayAvatarURL({ dynamic: true }))
         .setColor('0085FF')

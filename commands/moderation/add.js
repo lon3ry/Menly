@@ -4,8 +4,9 @@ const MemberSchema = require('../../schemas/member-schema.js');
 const updateDb = async (target, category, ammount) => {
   let query = {};
   query[`${category}`] = ammount;
-  await MemberSchema.findOneAndUpdate( {userId: `${target.id}`, guildId: `${target.guild.id}`}, {$inc: query});
+  await MemberSchema.findOneAndUpdate({ userID: `${target.id}`, guildID: `${target.guild.id}` }, { $inc: query });
 }
+
 module.exports = {
   commands: 'add',
   group: 'Moderation',
@@ -19,14 +20,14 @@ module.exports = {
     try {
       let target = message.mentions.members.first();
       let category = args[1];
-      let ammount = args[2];
-      
+      let ammount = Math.trunc(args[2]);
+
       if (!target) {
         await message.react('🚫');
         let embed = new Discord.MessageEmbed()
           .setColor('0085FF')
           .setDescription(`:no_entry_sign: ${message.author}, **укажите пользователя!**`)
-        await message.channel.send(embed).then(message => {message.delete({ timeout: 5 * 1000})});
+        await message.channel.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
         return;
       }
 
@@ -35,7 +36,7 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
           .setColor('0085FF')
           .setDescription(`:no_entry_sign: ${message.author}, количество не может быть меньше **0**`)
-        await message.channel.send(embed).then(message => {message.delete({ timeout: 5 * 1000})});
+        await message.channel.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
         return;
       }
 

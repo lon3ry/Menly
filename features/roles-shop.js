@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 const MemberSchema = require(`../schemas/member-schema.js`);
-const ShopSchema = require('../schemas/shop-schema.js');
+const RolesShopSchema = require('../schemas/roles-shop-schema.js');
 
 
 module.exports = async (bot) => {
-  const Shop = async (reaction, user, category) => {
+  const RolesShop = async (reaction, user, category) => {
     const { message } = reaction;
     const { guild } = message;
 
@@ -12,9 +12,9 @@ module.exports = async (bot) => {
       return;
     }
 
-    const { message: ShopMessage, roles, config } = await ShopSchema.findOne({ guildId: `${guild.id}` });
+    const { message: RolesShopMessage, roles, config } = await RolesShopSchema.findOne({ guildID: `${guild.id}` });
 
-    if (`${message.id}` == ShopMessage.id) {
+    if (`${message.id}` == RolesShopMessage.id) {
       const numberEmoji = new Map()
         .set('1️⃣', 0)
         .set('2️⃣', 1)
@@ -36,7 +36,7 @@ module.exports = async (bot) => {
         if (target.roles.cache.has(reactionRole.id)) {
           return;
         }
-        const { coins: targetCoins } = await MemberSchema.findOne({ guildId: `${guild.id}`, userId: `${target.id}` });
+        const { coins: targetCoins } = await MemberSchema.findOne({ guildID: `${guild.id}`, userID: `${target.id}` });
 
         if (targetCoins - reactionRoleData.price < 0) {
           const embed = new Discord.MessageEmbed()
@@ -46,13 +46,13 @@ module.exports = async (bot) => {
           return;
         }
 
-        await MemberSchema.findOneAndUpdate({ guildId: `${guild.id}`, userId: `${target.id}` }, {
+        await MemberSchema.findOneAndUpdate({ guildID: `${guild.id}`, userID: `${target.id}` }, {
           $inc: {
             coins: -reactionRoleData.price
           }
         });
         await target.roles.add(reactionRole);
-        console.log(`[${guild.name}][ROLES-Shop] added role with name ${reactionRole.name} to ${target.displayName}`);
+        console.log(`[${guild.name}][ROLES-SHOP] added role with name ${reactionRole.name} to ${target.displayName}`);
 
       } else if (category == 'remove') {
         if (!config.removeRoles) {
@@ -60,7 +60,7 @@ module.exports = async (bot) => {
         }
 
         if (target.roles.cache.has(reactionRole.id)) {
-          await MemberSchema.findOneAndUpdate({ guildId: `${guild.id}`, userId: `${target.id}` }, {
+          await MemberSchema.findOneAndUpdate({ guildID: `${guild.id}`, userID: `${target.id}` }, {
             $inc: {
               coins: reactionRoleData.price
             }
@@ -82,7 +82,7 @@ module.exports = async (bot) => {
 
   bot.on('messageReactionAdd', async (reaction, user) => {
     try {
-      await Shop(reaction, user, 'add');
+      await RolesShop(reaction, user, 'add');
     } catch (err) {
       return;
     }
@@ -90,7 +90,7 @@ module.exports = async (bot) => {
 
   bot.on('messageReactionRemove', async (reaction, user) => {
     try {
-      await Shop(reaction, user, 'remove');
+      await RolesShop(reaction, user, 'remove');
     } catch (err) {
       return;
     }

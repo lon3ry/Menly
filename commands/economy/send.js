@@ -12,27 +12,31 @@ module.exports = {
   callback: async (message, args, text, bot) => {
     try {
 
-      let ammount = ~~args[1]; // float to number
+      let ammount = Math.trunc(args[1]); // float to number
       const target = message.mentions.members.first();
-      
-      senderOldData = await MemberSchema.findOne({userId: `${message.member.id}`, guildId: `${message.guild.id}`}); // check sender data
+
+      senderOldData = await MemberSchema.findOne({ userID: `${message.member.id}`, guildID: `${message.guild.id}` }); // check sender data
 
       if (senderOldData.coins - ammount < 0) { // if sender doesnt have coins to send
         await message.react('🚫');
         const embed = new Discord.MessageEmbed()
           .setColor('0085FF')
           .setDescription(`:no_entry_sign: ${message.author}, у вас недостаточно средств, чтобы осуществить перевод размером ${ammount}`)
-        await message.channel.send(embed).then(message => {message.delete({timeout: 5 * 1000})});
+        await message.channel.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
         return;
       }
-      
-      await MemberSchema.findOneAndUpdate({userId: `${message.member.id}`, guildId: `${message.guild.id}`}, {$inc: {
-        coins: -ammount
-      }});
-      
-      await MemberSchema.findOneAndUpdate({userId: `${target.id}`, guildId: `${message.guild.id}`}, {$inc: {
-        coins: ammount
-      }}, {new: true, upsert: true})
+
+      await MemberSchema.findOneAndUpdate({ userID: `${message.member.id}`, guildID: `${message.guild.id}` }, {
+        $inc: {
+          coins: -ammount
+        }
+      });
+
+      await MemberSchema.findOneAndUpdate({ userID: `${target.id}`, guildID: `${message.guild.id}` }, {
+        $inc: {
+          coins: ammount
+        }
+      }, { new: true, upsert: true })
       await message.react('☑️');
       console.log(`[${message.guild.name}][SEND][SUCCES] sended ${ammount} coins from ${message.member.displayName} to ${target.displayName}`);
 

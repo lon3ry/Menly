@@ -17,11 +17,11 @@ module.exports = bot => {
 
     if (results && results.length) {
       for (result of results) {
-        const { guildId, userId } = result;
-        const guild = bot.guilds.cache.get(guildId);
-        const { muteRole: muteRoleId } = await GuildSchema.findOne({ guildId: `${guild.id}` });
+        const { guildID, userID } = result;
+        const guild = bot.guilds.cache.get(guildID);
+        const { muteRole: muteRoleId } = await GuildSchema.findOne({ guildID: `${guild.id}` });
         const muteRole = guild.roles.cache.get(muteRoleId);
-        const member = guild.members.cache.get(userId);
+        const member = guild.members.cache.get(userID);
         await member.roles.remove(muteRole);
       }
       await MuteSchema.updateMany(conditional, { active: false });
@@ -31,9 +31,9 @@ module.exports = bot => {
   checkMutes();
 
   bot.on('guildMemberAdd', async (member) => {
-    const isMuted = await MuteSchema.find({ userId: `${member.id}`, guildId: `${member.guild.id}` });
+    const isMuted = await MuteSchema.find({ userID: `${member.id}`, guildID: `${member.guild.id}` });
     if (isMuted) {
-      const { muteRole: muteRoleId } = await GuildSchema.findOne({ guildId: `${member.guild.id}` });
+      const { muteRole: muteRoleId } = await GuildSchema.findOne({ guildID: `${member.guild.id}` });
       const muteRole = member.guild.roles.cache.get(muteRoleId);
       await member.roles.add(muteRole);
     }

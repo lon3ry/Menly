@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 const GuildSchema = require('../schemas/guild-schema.js');
-const CounterSchema = require('../schemas/counter-schema.js');
+const CounterSchema = require('../schemas/count-channel-schema.js');
 
 const updateChannel = async (guild) => {
-  const isChannelCreated = await CounterSchema.findOne({ guildId: `${guild.id}` });
+  const isChannelCreated = await CounterSchema.findOne({ guildID: `${guild.id}` });
 
   if (!isChannelCreated) {
     return;

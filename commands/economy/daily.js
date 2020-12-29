@@ -6,14 +6,13 @@ module.exports = {
   commands: ['daily', 'dailyaward', 'claim'],
   group: 'Economy',
   description: 'Перечисление коинов на другой счёт',
-  usage: '',
   permissionError: 'недостаточно прав',
   minArgs: 0,
   maxArgs: 0,
   callback: async (message, args, text, bot) => {
     try {
 
-      const memberQuery = { guildId: `${message.guild.id}`, userId: `${message.author.id}` };
+      const memberQuery = { guildID: `${message.guild.id}`, userID: `${message.author.id}` };
       const data = await DailySchema.findOne(memberQuery); // find data
       const timeNow = new Date();
 

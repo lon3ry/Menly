@@ -6,7 +6,7 @@ module.exports = (bot) => {
   bot.on('voiceStateUpdate', async (oldState, newState) => {
     const member = oldState.member;
     const countStatus = await getCountStatus(member);
-    const { afkChannel } = await GuildSchema.findOne({ guildId: `${member.guild.id}` });
+    const { afkChannel } = await GuildSchema.findOne({ guildID: `${member.guild.id}` });
 
     if (countStatus == 'stop' || typeof countStatus === undefined) {
       if (!member.voice.selfMute) {

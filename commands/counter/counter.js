@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const CounterSchema = require('../../schemas/counter-schema.js');
+const CounterSchema = require('../../schemas/count-channel-schema.js');
 
 module.exports = {
   commands: ['counter', 'count'],
@@ -18,11 +18,11 @@ module.exports = {
         // without category
       });
 
-      const oldCounterData = await CounterSchema.findOne({guildId: `${guild.id}`}); // find old data
+      const oldCounterData = await CounterSchema.findOne({guildID: `${guild.id}`}); // find old data
 
       if (!oldCounterData) { // if old data, update them, else - create
         const counterData = new CounterSchema({
-          guildId: `${guild.id}`,
+          guildID: `${guild.id}`,
           membersChannel: {
             id: `${countChannel.id}`
           }
@@ -32,7 +32,7 @@ module.exports = {
 
       } else if (oldCounterData) {
         await CounterSchema.findOneAndUpdate({
-          guildId: `${guild.id}`
+          guildID: `${guild.id}`
         }, {
           $set: {
             membersChannel: {
