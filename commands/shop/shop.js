@@ -5,10 +5,9 @@ module.exports = {
   commands: ['shop', 'roles-shop', 'rolesshop'],
   group: 'Shop',
   description: 'Магазин ролей',
-  permissionError: 'недостаточно прав',
   minArgs: 0,
   maxArgs: 0,
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
       
       const RolesShopData = await RolesShopSchema.findOne({ guildID: `${message.guild.id}` });
@@ -16,8 +15,8 @@ module.exports = {
       if (!RolesShopData) {
         await message.delete(message);
         const embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:no_entry_sign: ${message.author}, **роли в магазине не заданы!** Задайте их с помощью команды \`\`!setShop role <@role>\`\``)
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, **${commandText.noShopRolesError}**`)
         await message.channel.send(embed);
         return;
       }
@@ -41,13 +40,13 @@ module.exports = {
 
 
       for (role of roles) {
-        rolesText += `<@&${role.id}>\n${numberEmoji.get(counter)}**\`\`${role.price} коинов\`\`**\n \n`;
+        rolesText += `<@&${role.id}>\n${numberEmoji.get(counter)}**\`\`${role.price} ${commandText.priceName}\`\`**\n \n`;
         counter++;
       }
 
       const embed = new Discord.MessageEmbed()
-        .setTitle('Магазин ролей')
-        .setColor('0085FF')
+        .setTitle(commandText.succes.name)
+        .setColor('E515BD')
         .setDescription(`${RolesShopMessage.description}\n \n${rolesText}`)
         
       await message.delete(message);

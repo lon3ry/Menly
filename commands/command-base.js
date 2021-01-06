@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
-const GuildSchema = require('../schemas/guild-schema.js')
+const GuildSchema = require('../schemas/guild-schema.js');
+const { getCommandText, getErrorsText } = require('../utils/language.js');
+
 const validatePermissions = (permissions) => {
   const validPermissions = [
     'ADMINISTRATOR',
@@ -49,7 +51,6 @@ module.exports = (bot, commandOptions) => {
     group = '',
     description = '',
     usage = '',
-    permissionError = 'У вас недостаточно прав для вызова команды',
     minArgs = 0,
     maxArgs = null,
     permissions = [],
@@ -77,35 +78,44 @@ module.exports = (bot, commandOptions) => {
     }
 
     const guildData = await GuildSchema.findOne({ guildID: `${guild.id}` });
-    let { prefix, commandChannel } = guildData;
+    let { prefix, commandChannel, language } = guildData;
+    const errorsText = getErrorsText(language);
+
     for (const alias of commands) {
       if (content.toLowerCase().startsWith(`${prefix}${alias.toLowerCase()}`)) {
-        const adminGroups = ['Moderation', 'embeds', 'settings', 'Shop'];
+        const adminGroups = ['Moderation', 'Embeds', 'Settings', 'Shop'];
         if (adminGroups.indexOf(group) == -1 && commandChannel != `${message.channel.id}` && commandChannel != 'undefined') {
           try {
-            const channel = guild.channels.cache.get(commandChannel);
+            const channel = await guild.channels.cache.get(commandChannel);
             let embed = new Discord.MessageEmbed()
-              .setColor('0085FF')
-              .setDescription(`:no_entry_sign: В этом чате запрещено использовать комманды! Чат для комманд - ${channel}`)
-              .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
-              .setTimestamp()
-            await message.channel.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
+              .setColor('E515BD')
+              .setDescription(`:no_entry_sign: ${message.author}, **${errorsText.incorrectChatError[0]}**. ${errorsText.incorrectChatError[1]} ${channel}`)
+            await message.channel.send(embed);
             return;
 
           } catch (err) {
             return;
           }
         }
+
+        const botMember = await guild.members.cache.get(bot.user.id);
         for (const permission of permissions) {
+          await message.react('🚫');
+          if (!botMember.hasPermission(permission)) {
+            // bot haven't permission ${permission}. Please add role with this permission to bot if you want use command ${alias}
+            let embed = new Discord.MessageEmbed()
+              .setColor('E515BD')
+              .setDescription(`:no_entry_sign: ${guild.owner}, **${errorsText.botPermissionError[0]}** \`\`${permission}\`\`. ${errorsText.botPermissionError[1]} \`\`${alias}\`\``)
+            await guild.owner.send(embed)
+            return;
+          }
           if (!member.hasPermission(permission)) {
-            message.delete(message);
             try {
+              await message.react('🚫');
               let embed = new Discord.MessageEmbed()
-                .setColor('0085FF')
-                .setDescription(`**:no_entry_sign: Ошибка:** ${permissionError}`)
-                .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
-                .setTimestamp()
-              message.author.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
+                .setColor('E515BD')
+                .setDescription(`:no_entry_sign: ${message.author}, **${errorsText.memberPermissionError}**`)
+              await message.channel.send(embed);
               return;
             } catch (err) {
               return;
@@ -117,21 +127,19 @@ module.exports = (bot, commandOptions) => {
         arguments.shift();
         if (arguments.length < minArgs || (maxArgs !== null && arguments.length > maxArgs)) {
           try {
-            message.delete(message);
+            await message.react('🚫');
             const commandUsage = usage ? ` ${usage}` : ''
             let embed = new Discord.MessageEmbed()
-              .setColor('0085FF')
-              .setDescription(`:no_entry_sign: **Неправильный синтаксис!** Используйте **\`\`${prefix}${alias}${usage}\`\`** чтобы воспользоваться данной командой!`)
-              .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
-            message.channel.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
+              .setColor('E515BD')
+              .setDescription(`:no_entry_sign: ${message.author}, ${errorsText.syntaxError[0]} **\`\`${prefix}${alias}${commandUsage}\`\`** ${errorsText.syntaxError[1]}`)
+            await message.channel.send(embed);
             return;
 
           } catch (err) {
             return;
           }
         }
-
-        callback(message, arguments, arguments.join(' '), bot);
+        callback(message, arguments, arguments.join(' '), getCommandText(language, commands[0]), bot);
         return;
       }
     }

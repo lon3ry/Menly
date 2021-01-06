@@ -6,16 +6,14 @@ module.exports = {
   group: 'Counter',
   description: 'Создание канала с подсчётом участников на сервере',
   usage: '',
-  permissionError: 'недостаточно прав',
   minArgs: 0,
   maxArgs: 0,
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
 
       const { guild } = message;
       const countChannel = await guild.channels.create(`👤 Members: ${guild.memberCount}`, {
-        type: 'voice',
-        // without category
+        type: 'voice'
       });
 
       const oldCounterData = await CounterSchema.findOne({guildID: `${guild.id}`}); // find old data
@@ -42,8 +40,10 @@ module.exports = {
         });
       }
       await message.react('☑️'); // reacting to call if comand done
+      console.log(`[${message.guild.name}][COUNTER] counter created/updated`)
 
     } catch (err) {
+      console.log(`[${message.guild.name}][ERROR]`, err)
       return;
     }
   }

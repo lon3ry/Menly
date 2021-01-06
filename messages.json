@@ -1,0 +1,412 @@
+{
+  "languages": [
+    "english",
+    "russian"
+  ],
+  "translations": {
+    "russian": {
+      "errors": {
+        "noTagUserError": "укажите пользователя!",
+        "noMemberOnGuildError": "пользователя нет на сервере!",
+        "noTagRoleError": "укажите роль",
+        "noTagChannelError": "укажите канал",
+        "ammountZeroError": "количество не может быть меньше или равно 0",
+        "memberPermissionError": "у вас недостаточно прав для использования этой команды",
+        "syntaxError": [
+          "**неправильный синтаксис!** Используйте",
+          "чтобы воспользоваться данной командой"
+        ],
+        "incorrectChatError": [
+          "неправильный чат",
+          "Правильный чат -"
+        ],
+        "botPermissionError": [
+          "у бота нету прав",
+          "Предоставите боту роль с данными правами, если вы хотите использовать команду"
+        ]
+      },
+      "commands": {
+  			"daily": {
+          "authorIsOpponentError": "невозможно сыграть дуэль с самим собой!",
+          "alreadyClaimedError": [
+            "вы уже получили награды на сегодня",
+            "Следующие награды через"
+          ],
+          "succes": {
+            "description": [
+              "ваша награда на сегодня составляет",
+              "коинов"
+            ]
+          }
+        },
+        "casino": {
+          "outOfRangeMoneyError": "сумма ставки должна быть в пределе **50-5000** coins",
+          "noMoneyError": "недостаточно средств чтобы сыграть на сумму",
+          "succes": {
+            "description": [
+              "Победу одерживает",
+              "Его выигрыш составляет"
+            ]
+          }
+        },
+        "duels": {
+          "embedName": "Дуэль",
+          "invite": {
+            "description": [
+              "пригласил вас на дуэль! Сумма ставки равна",
+              "коинов. Хотите принять участие?"
+            ]
+          },
+          "inviteClose": {
+            "description": [
+              "отказался от дуэли"
+            ]
+          },
+          "inviterNoMoneyError": [
+            "у вас недостаточно средств чтобы предложить сыграть дуэль со суммой ставки",
+            "коинов"
+          ],
+          "opposingNoMoneyError": [
+            "у вашего противника недостаточно средств чтобы сыграть в дуэль со ставкой в",
+            "коинов"
+          ],
+          "succes": {
+            "description": [
+              "одерживает победу в схватке против",
+              "Его выигрыш составляет"
+            ]
+          }
+        },
+        "send": {
+          "noMoneyError":[
+            "у вас недостаточно средств, чтобы осуществить перевод размером",
+            "коинов"
+          ]
+        },
+        "ban": {
+          "succes": {
+            "name": "Блокировка",
+            "description": [
+              "Вы были заблокированы на сервере",
+              " пользователем"
+            ]
+          }
+        },
+        "clear": {
+          "clearAmmountError": "число удаляемых сообщений должно быть до",
+          "succes": {
+            "description": [
+              "успешно удалено",
+              "сообщений!"
+            ]
+          }
+        },
+        "kick": {
+          "succes": {
+            "name": "Блокировка",
+            "description": [
+              "Вы были исключены с сервера",
+              " пользователем"
+            ]
+          }
+        },
+        "usermute": {
+          "alreadyMutedError": "пользователь уже замьючен на сервере",
+          "muteRoleNotFoundError": "на сервере не установлена мьют-роль!",
+          "succes": {
+            "name": "Мьют",
+            "description": [
+              "Вы были замьючены"
+            ],
+            "fieldNames": [
+              "Сервер",
+              "Время",
+              "Причина",
+              "Модератор"
+            ]
+          }
+        },
+        "unban": {
+          "succes": {
+            "name": "Вы снова допущены к серверу",
+            "description": [
+              "Вы были разблокированы на сервереr",
+              "пользователем",
+              "Приглашение на сервер"
+            ]
+          }
+        },
+        "unmute": {
+          "alreadyUnmutedError": [
+            "пользователь не находится в мьюте!"
+          ]
+        },
+        "help": {
+          "succes": {
+            "footer": "Чтобы посмотреть подробную информацию, напишите help <название команды>"
+          }
+        },
+        "stats": {
+          "succes": {
+            "name": "Ваша статистика",
+            "fieldNames": [
+              "Количество коинов",
+              "Часы в голосовых каналах",
+              "Количество сообщений",
+              "Опыт",
+              "Уровень",
+              "Статус начисления"
+            ]
+          }
+        },
+        "delete-poll": {
+          "noDataFoundError": [
+            "настройки реакций в канале",
+            "не определены!"
+          ]
+        },
+        "delete-shop": {
+          "noDataFoundError": "магазин ролей ещё не создан!"
+        },
+        "set-counter": {
+          "noDataFoundError": "канал с подсчётом пользователей не создан!"
+        },
+        "set-afkchannel": {
+          "afkChannelNotFoundError": "афк-канал не установлен на сервере! Присвойте его в настройках сервера, чтобы воспользоваться данной командой"
+        },
+        "set-language": {
+          "languageIsIncorrectError": "язык не найден. Установите язык <russian/english>"
+        },
+        "set-prefix": {
+          "succes": {
+            "description": "префикс успешно изменен на"
+          }
+        },
+        "set-shop": {
+          "maxShopRolesError": "установлено максимальное количество ролей в магазине!",
+          "noDataFoundError": "магазин ролей ещё не создан!"
+        },
+        "shop": {
+          "noShopRolesError": "роли в магазине не заданы!",
+          "priceName": "коинов",
+          "succes": {
+            "name": "Магазин ролей"
+          }
+        },
+        "top": {
+          "noLeadersError": "список лидеров по статистике ещё не сформирован",
+          "succes": {
+            "titleNames": [
+              "Топ участников по часам в голосовых каналах",
+              "Топ участников по количеству сообщений",
+              "Топ участников по количеству опыта",
+              "Топ участников по количеству коинов"
+            ]
+          }
+        }
+      }
+    },
+    "english": {
+      "errors": {
+        "noTagUserError": "tag a user!",
+        "noMemberOnGuildError": "user not be on server",
+        "noTagRoleError": "tag a role!",
+        "noTagChannelError": "tag a channel!",
+        "ammountZeroError": "ammount must be bigger and not equal 0",
+        "permissionError": "you don't have permission/permissions to use this command",
+        "syntaxError": [
+          "**incorrect syntax!** Write",
+          "to use this this command"
+        ],
+        "incorrectChatError": [
+          "incorrect chat",
+          "Correct chat is"
+        ],
+        "botPermissionError": [
+          "bot haven't permission",
+          "Please add role with this permission to bot if you want use command"
+        ]
+      },
+      "commands": {
+  			"daily": {
+          "authorIsOpponentError": "you can't play duel with yourself",
+          "alreadyClaimedError": [
+            "you are already claimed awards today",
+            "Next award after"
+          ],
+          "succes": {
+            "description": [
+              "you award today is",
+              "coins"
+            ]
+          }
+        },
+        "casino": {
+          "outOfRangeMoneyError": "casino ammount must be from **50 - 5000** coins",
+          "noMoneyError": "not enough money to gamble",
+          "succes": {
+            "description": [
+              "Winner is",
+              "His winnings amount is"
+            ]
+          }
+        },
+        "duels": {
+          "embedName": "Duel",
+          "invite": {
+            "description": [
+              "invited you to a duel. Bet of coins is",
+              "coins. Do you want to take part?"
+            ]
+          },
+          "inviteClose": {
+            "description": [
+              "refused to duel"
+            ]
+          },
+          "inviterNoMoneyError": [
+            "you doesn't have coins to play game with bet",
+            "coins"
+          ],
+          "opposingNoMoneyError": [
+            "you opposing doesn't have coins to play with bet",
+            "coins"
+          ],
+          "succes": {
+            "description": [
+              "won in game vs",
+              "His winnings amount is"
+            ]
+          }
+        },
+        "send": {
+          "noMoneyError":[
+            "you doesn't have money to send with sum of",
+            "coins"
+          ]
+        },
+        "ban": {
+          "succes": {
+            "name": "Ban",
+            "description": [
+              "You have been banned on server,",
+              "staff is"
+            ]
+          }
+        },
+        "clear": {
+          "clearAmmountError": "ammount of messages must be smaller",
+          "succes": {
+            "description": [
+              "successfully deleted",
+              "messages"
+            ]
+          }
+        },
+        "kick": {
+          "succes": {
+            "name": "Kick",
+            "description": [
+              "You have been kicked from server",
+              ". Staff is"
+            ]
+          }
+        },
+        "usermute": {
+          "alreadyMutedError": "user already muted on server",
+          "muteRoleNotFoundError": "server haven't a mute-role",
+          "succes": {
+            "name": "Mute",
+            "description": [
+              "You have been muted on server"
+            ],
+            "fieldNames": [
+              "Server",
+              "Time",
+              "Reason",
+              "Staff"
+            ]
+          }
+        },
+        "unban": {
+          "succes": {
+            "name": "You are unbanned from server",
+            "description": [
+              "You are unbanned from server",
+              ", staff is",
+              "Join server"
+            ]
+          }
+        },
+        "unmute": {
+          "alreadyUnmutedError": [
+            "user is already unmuted"
+          ]
+        },
+        "help": {
+          "succes": {
+            "footer": "If you want get more information about command, type help <command name>"
+          }
+        },
+        "stats": {
+          "succes": {
+            "name": "Your statistic",
+            "fieldNames": [
+              "Coins",
+              "Hours in voice",
+              "Messages",
+              "XP",
+              "Level",
+              "VoiceCount status"
+            ]
+          }
+        },
+        "delete-poll": {
+          "noDataFoundError": [
+            "reaction settings in channel",
+            "doesn't set"
+          ]
+        },
+        "delete-shop": {
+          "noDataFoundError": "role-shop isn't created"
+        },
+        "set-counter": {
+          "noDataFoundError": "count-members channel isn't created"
+        },
+        "set-afkchannel": {
+          "afkChannelNotFoundError": "афк-канал не установлен на сервере! Присвойте его в настройках сервера, чтобы воспользоваться данной командой"
+        },
+        "set-language": {
+          "languageIsIncorrectError": "language not found. Set language <russian/english>"
+        },
+        "set-prefix": {
+          "succes": {
+            "description": "prefix successfully changed to"
+          }
+        },
+        "set-shop": {
+          "maxShopRolesError": "have set max roles in role-shop",
+          "noDataFoundError": "role-shop isn't created"
+        },
+        "shop": {
+          "noShopRolesError": "roles in role-shop haven't been set",
+          "priceName": "coins",
+          "succes": {
+            "name": "Role-shop"
+          }
+        },
+        "top": {
+          "noLeadersError": "list of leaders in this category not formed yet",
+          "succes": {
+            "titleNames": [
+              "Leaders of hrsvoice",
+              "Leaders of messages",
+              "Leaders of XP",
+              "Leaders of coins"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

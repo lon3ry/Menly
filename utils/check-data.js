@@ -21,11 +21,12 @@ module.exports = async (bot) => {
     await MemberSchema.find({ countStatus: 'start' }, async (err, data) => {
       for (el of data) {
         const guild = await bot.guilds.cache.get(el.guildID);
-        const member = await guild.members.cache.get(el.userID);
-        
-        if (member.voice.channel == null || member.voice.channel.members.array().length < 2) {
-          await stopCount(member)
-        }	
+        if (guild) {
+          const member = await guild.members.cache.get(el.userID);
+          if (member.voice.channel == null || member.voice.channel.members.array().length < 2) {
+            await stopCount(member)
+          }	
+        }
       }
     }).catch((err) => {
       console.log('[UTILS][CHECK-DATA]', err);

@@ -40,7 +40,7 @@ module.exports = async (bot) => {
 
         if (targetCoins - reactionRoleData.price < 0) {
           const embed = new Discord.MessageEmbed()
-            .setColor('0085FF')
+            .setColor('E515BD')
             .setDescription(`:no_entry_sign: ${target}, **у вас недосаточно коинов** для преобретения данной роли. У вас ${targetCoins}/${reactionRoleData.price}`);
           await target.send(embed);
           return;

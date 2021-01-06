@@ -11,13 +11,12 @@ const updateDb = async (target, category, ammount) => {
 module.exports = {
   commands: 'remove',
   group: 'Moderation',
-  description: 'убирает коины / часы в голосовом канале участнику',
-  permissionError: 'у вас недостаточно прав для вызова этой команды',
+  description: 'Removes coins/hrsvoice from member',
   usage: '<@member> <hrs / coins> <ammount>',
   minArgs: 3,
   maxArgs: 3,
   permissions: ['ADMINISTRATOR'],
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
       let target = message.mentions.members.first();
       let category = args[1];
@@ -26,18 +25,18 @@ module.exports = {
       if (!target) {
         await message.react('🚫');
         let embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:no_entry_sign: ${message.author}, **укажите пользователя!**`)
-        await message.channel.send(embed).then(message => {message.delete({ timeout: 5 * 1000})});
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, **${commandText.errors.noTagUserError}**`)
+        await message.channel.send(embed);
         return;
       }
 
       if (ammount <= 0) {
         await message.react('🚫');
         let embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:no_entry_sign: ${message.author}, количество не может быть меньше или равно **0**`)
-        await message.channel.send(embed).then(message => {message.delete({ timeout: 5 * 1000})});
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, **${commandText.errors.ammountZeroError[0]}**`)
+        await message.channel.send(embed)
         return;
       }
 
@@ -49,7 +48,8 @@ module.exports = {
       await message.react('☑');
       console.log(`[${message.guild.name}][REMOVE][SUCCES] removed ${ammount} coins from ${target.displayName}`);
       
-    } catch {
+    } catch (err) {
+      console.log(`[${message.guild.name}][REMOVE][ERROR]`, err);
       return;
     }
   }

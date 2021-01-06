@@ -3,36 +3,42 @@ const Discord = require('discord.js');
 module.exports = {
   commands: 'unban',
   group: 'Moderation',
-  description: 'Разблокирует раннее забанненого пользователя',
+  description: 'Unbans member',
   usage: '<@member>',
-  permissionError: 'у вас недостаточно прав для вызова этой команды',
   minArgs: 1,
   maxArgs: 1,
   permissions: ['MANAGE_MESSAGES'],
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
 
       const { guild, author } = message;
-      const targetId = args[0].replace('<@!', '').replace('>', '');
-      const target = await bot.users.fetch(targetId);
-      await guild.members.unban(target, 'Bot command!');
-      const channel = guild.channels.cache.filter((channel) => channel.type === 'text').first();
-      console.log(`[${message.guild.name}][UNBAN][SUCCES] unbanned ${target.username}`);
-      await message.react('☑️');
-
-      if (!channel) {
+      const target = message.mentions.users.first()
+      
+      if (!target) {
+        await message.react('🚫');
+        let embed = new Discord.MessageEmbed()
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, **${commandText.errors.noTagUserError}**`)
+        await message.channel.send(embed);
         return;
       }
 
+      await guild.members.unban(target, 'Bot command!');
+      console.log(`[${message.guild.name}][UNBAN][SUCCES] unbanned ${target.username}`);
+      await message.react('☑️');
+
+      const channel = guild.channels.cache.filter((channel) => channel.type === 'text').first();
+      if (!channel) {
+        return;
+      }
       await channel.createInvite({ maxAge: 0, maxUses: 0 }).then(async (invite) => {
-          let embed = new Discord.MessageEmbed()
-            .setColor('0085FF')
-            .setTitle('Вы снова допущены к серверу')
-            .setDescription(`Вы были разблокированы на сервере **${guild.name}** пользователем **${author}**\n[Приглашение на сервер](${invite})`)
-            .setAuthor(target.username, target.displayAvatarURL({ dynamic: true }))
-            .setTimestamp()
-          await target.send(embed);
-          await message.react('☑️');
+        let embed = new Discord.MessageEmbed()
+          .setColor('E515BD')
+          .setTitle(commandText.succes.name)
+          .setDescription(`${commandText.succes.description[0]} **${guild.name}** ${commandText.succes.description[1]} **${author}**\n[${commandText.succes.description[2]}](${invite})`)
+          .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
+          .setTimestamp()
+        await target.send(embed);
       });
       
     } catch (err) {

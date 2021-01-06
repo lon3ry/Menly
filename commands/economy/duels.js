@@ -3,12 +3,13 @@ const MemberSchema = require('../../schemas/member-schema.js');
 class duelGame {
   reacted = false;
 
-  constructor(bot, players, ammount, channel) {
+  constructor(bot, players, ammount, channel, commandText) {
     this._bot = bot;
     this._firstPlayer = players[0];
     this._secondPlayer = players[1];
     this._ammount = ammount;
     this._channel = channel;
+    this._commandText = commandText;
   }
 
   async start() {
@@ -18,9 +19,9 @@ class duelGame {
 
   async createInvite(creator, member) {
     const embed = new Discord.MessageEmbed()
-      .setColor('0085FF')
-      .setDescription(`${creator} пригласил вас на дуэль! Сумма ставки равна **${this._ammount}** коинов. Хотите принять участие?`)
-      .setTitle(':crossed_swords: Дуэль :crossed_swords:')
+      .setColor('E515BD')
+      .setDescription(`${creator} ${this._commandText.invite.description[0]} **${this._ammount}** ${this._commandText.invite.description[1]}`)
+      .setTitle(`:crossed_swords: ${this._commandText.embedName} :crossed_swords:`)
     const inviteMessage = await member.send(embed);
     await inviteMessage.react('☑️');
     await inviteMessage.react('❌');
@@ -28,9 +29,7 @@ class duelGame {
   }
 
   async getInviteAnswer(inviteMessage) {
-    console.log('getting answer', this._bot.user.tag);
     this.reacted = false;
-
     this._bot.on('messageReactionAdd', async (reaction, user) => {
       if (this.reacted) {
         return;
@@ -50,9 +49,9 @@ class duelGame {
         await inviteMessage.delete();
       } else if (reaction.emoji.name == '❌') {
         const embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`${this._secondPlayer} **отказался от дуэли**`)
-          .setTitle(':crossed_swords: Дуэль :crossed_swords:')
+          .setColor('E515BD')
+          .setDescription(`${this._secondPlayer} ${this._commandText.inviteClose.description[0]}`)
+          .setTitle(`:crossed_swords: ${this._commandText.embedName} :crossed_swords:`)
         await this._firstPlayer.send(embed);
         this.reacted = true;
         await inviteMessage.delete();
@@ -92,9 +91,9 @@ class duelGame {
 
 
     const embed = new Discord.MessageEmbed()
-      .setColor('0085FF')
-      .setDescription(`:trophy: ${winner} одерживает победу в схватке против ${loser}. Его выигрыш составляет **${this._ammount}**`)
-      .setTitle(':crossed_swords: Дуэль :crossed_swords:')
+      .setColor('E515BD')
+      .setDescription(`:trophy: ${winner} ${this._commandText.succes.description[0]} ${loser}. ${this._commandText.succes.description[1]} **${this._ammount}**`)
+      .setTitle(`:crossed_swords: ${this._commandText.embedName} :crossed_swords:`)
     await this._channel.send(embed);
     return;
   }
@@ -105,19 +104,27 @@ module.exports = {
   commands: ['duels', 'flipduel', 'coinduel'],
   group: 'Economy',
   usage: '<@member> <ammount>',
-  description: 'Дуэль 1 на 1 с участником сервера',
-  callback: async (message, args, text, bot) => {
+  description: 'Duel vs server member',
+  callback: async (message, args, text, commandText, bot) => {
     try {
       const target = message.mentions.members.first();
       const ammount = Math.trunc(args[1]);
 
+      if (!target) {
+        const embed = new Discord.MessageEmbed()
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, **${commandText.errors.noTagUserError}**`)
+          .setTitle(`:crossed_swords: ${this._commandText.embedName} :crossed_swords:`)
+        await message.author.send(embed);
+        return;
+      }
 
       if (target == message.member) {
         await message.react('🚫');
         const embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:no_entry_sign: ${message.author}, **невозможно** сыграть дуэль с самим собой!`)
-          .setTitle(':crossed_swords: Дуэль :crossed_swords:')
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, **${commandText.authorIsOpponentError}**`)
+          .setTitle(`:crossed_swords: ${this._commandText.embedName} :crossed_swords:`)
         await message.author.send(embed);
         return;
       }
@@ -125,30 +132,31 @@ module.exports = {
       let { coins: authorCoins } = await MemberSchema.findOne({ userID: `${message.author.id}`, guildID: `${message.guild.id}` });
       let { coins: targetCoins } = await MemberSchema.findOne({ userID: `${target.id}`, guildID: `${message.guild.id}` });
 
-      if (targetCoins < ammount) {
-        await message.react('🚫');
-        const embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:no_entry_sign: У ${target} **недостаточно коинов** чтобы сыграть дуэль с ставкой в **${ammount}** коинов`)
-          .setTitle(':crossed_swords: Дуэль :crossed_swords:')
-        await message.author.send(embed);
-        return;
-      }
-
       if (authorCoins < ammount) {
         await message.react('🚫');
         const embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:no_entry_sign: ${message.author}, у вас недостаточно средств чтобы предложить сыграть дуэль со суммой ставки **${ammount}** коинов`)
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, **${commandText.inviterNoMoneyError[0]}** **${ammount}** ${commandText.inviterNoMoneyError[1]}`)
           .setTitle(':crossed_swords: Дуэль :crossed_swords:')
         await message.author.send(embed);
         return;
       }
 
-      await new duelGame(bot, [message.member, target], ammount, message.channel).start();
+      if (targetCoins < ammount) {
+        await message.react('🚫');
+        const embed = new Discord.MessageEmbed()
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, ${commandText.opposingNoMoneyError[0]} **${ammount}** ${commandText.opposingNoMoneyError[1]}`)
+          .setTitle(':crossed_swords: Дуэль :crossed_swords:')
+        await message.author.send(embed);
+        return;
+      }
+
+
+      await new duelGame(bot, [message.member, target], ammount, message.channel, commandText).start();
 
     } catch (err) {
-      console.log(err);
+      console.log(`[${message.guild.name}][DUELS][ERROR]`, err);
       return;
     }
   }

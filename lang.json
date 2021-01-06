@@ -1,0 +1,181 @@
+{
+	"languages": [
+		"english",
+		"russian"
+	],
+	"translations": {
+		"russian": {
+
+		},
+		"english": {
+			"daily": {
+				"succesClaim": [
+					"you award today is",
+					"coins"
+				],
+				"alreadyClaimedError": [
+					"you are already claimed awards today",
+					"Next award after"
+				]
+			},
+			"casino": {
+				"outOfRangeMoneyError": [
+					"casino ammount must be from **50 - 5000** coins"
+				],
+				"noMoneyError": [
+					"not enough money to gamble"
+				],
+				"gameOver": [
+					"Winner is",
+					"His winnings amount is"
+				]
+			},
+			"duels": {
+				"invite": [
+					"invited you to a duel. Bet of coins is",
+					"coins. Do you want to take part?"
+				],
+				"embedName": [
+					"Duel"
+				],
+				"inviteClose": [
+					"refused to duel"
+				],
+				"gameOver": [
+					"won in game vs",
+					"His winnings amount is"
+				],
+				"inviterNoMoneyError": [
+					"you doesn't have coins to play game with bet",
+					"coins"
+				],
+				"opposingNoMoneyError": [
+					"you opposing doesn't have coins to play with bet",
+					"coins"
+				]
+			},
+			"send": {
+				"noMoneyError":[
+					"you doesn't have money to send with sum of",
+					"coins"
+				]
+			},
+			"add": {
+				"noTagUserError": [
+					"tag a user!"
+				],
+				"ammountZeroError": [
+					"the amount shouldn't be smaller than"
+				]
+			},
+			"ban": {
+				"noTagUserError": [
+					"tag a user!"
+				],
+				"embedName": [
+					"Ban"
+				],
+				"succesBan": [
+					"You have been banned on server",
+					". Staff is"
+				],
+				"noMemberOnGuildError": [
+					"member wasn't on server"
+				]
+			},
+			"clear": {
+				"clearAmmountError": [
+					"ammount of messages must be smaller"
+				],
+				"succesClear": [
+					"successfully deleted",
+					"messages"
+				]
+			},
+			"kick": {
+				"noTagUserError": [
+					"tag a user!"
+				],
+				"embedName": [
+					"Kick"
+				],
+				"succesKick": [
+					"You have been kicked from server",
+					". Staff is"
+				],
+				"noMemberOnGuildError": [
+					"member wasn't on server"
+				]
+			},
+			"usermute": {
+				"noTagUserError": [
+					"tag a user!"
+				],
+				"alreadyMutedError": [
+					"user already muted on server"
+				],
+				"muteRoleNotFoundError": [
+					"server haven't a mute-role. You can set them with command",
+					"setmuterole"
+				],
+				"embedName": [
+					"Mute"
+				],
+				"embedFieldNames": [
+					"Time",
+					"Reason"
+				],
+				"succesMute": [
+					"You have been muted on server"
+				]
+			},
+			"remove": {
+				"noTagUserError": [
+					"tag a user!"
+				],
+				"ammountZeroError": [
+					"the amount shouldn't be smaller than"
+				]
+			},
+			"unban": {
+				"noTagUserError": [
+					"tag a user!"
+				],
+				"embedName": [
+					"You are unbanned from server"
+				],
+				"succesUnbanText": [
+					"You are unbanned from server",
+					". Staff is",
+					"Invite"
+				]
+			},
+			"unmute": {
+				"noTagUserError": [
+					"tag a user!"
+				],
+				"alreadyUnmutedError": [
+					"user is already unmuted"
+				]
+			},
+			"help": {
+				"footerText": [
+					"If you want get more information about command, type help <command name>"
+				]
+			},
+			"stats": {
+				"embedName": [
+					"Your statistic"
+				],
+				"fieldNames": [
+					"Coins",
+					"Hours in voice",
+					"Messages",
+					"XP",
+					"Level",
+					"Count status"
+				]
+			}
+		}
+	}
+}

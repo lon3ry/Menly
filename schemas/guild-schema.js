@@ -10,6 +10,11 @@ const GuildSchema = new Schema({
         required: true,
         default: '!'
     },
+    language: {
+        type: String,
+        required: true,
+        default: 'english'
+    },
     afkChannel: {
         type: String,
         required: true,

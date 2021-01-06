@@ -5,11 +5,10 @@ const MemberSchema = require('../../schemas/member-schema.js');
 module.exports = {
   commands: ['daily', 'dailyaward', 'claim'],
   group: 'Economy',
-  description: 'Перечисление коинов на другой счёт',
-  permissionError: 'недостаточно прав',
+  description: 'Everyday award',
   minArgs: 0,
   maxArgs: 0,
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
 
       const memberQuery = { guildID: `${message.guild.id}`, userID: `${message.author.id}` };
@@ -26,22 +25,23 @@ module.exports = {
         }, { upsert: true, new: true })
         await MemberSchema.updateOne(memberQuery, { $inc: { coins: award } });
         const embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:money_with_wings: ${message.author}, ваша награда на сегодня **${award}** коинов`)
+          .setColor('E515BD')
+          .setDescription(`:money_with_wings: ${message.author}, ${commandText.succes.description[0]} **${award}** ${commandText.succes.description[1]}`)
         await message.channel.send(embed);
 
       } else {
         await message.react('🚫');
         const diffTime = Math.abs(data.nextAwardTime.getTime() - timeNow.getTime());
-        const diffMinutes = Math.floor(Math.round(diffTime / (1000 * 60 * 60)) * 60 - diffTime / (1000 * 60)); // getting minutes
+        const diffMinutes = Math.round(Math.round(diffTime / (1000 * 60 * 60)) * 60 - diffTime / (1000 * 60)); // getting minutes
         const diffHours = Math.trunc((diffTime / (1000 * 60) - diffMinutes) / 60); // getting hours
         const embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:money_with_wings: ${message.author}, **вы уже получили награды за сегодня!** Следующие награды через **${diffHours} часов ${60 - diffMinutes == 60 ? 0 : 60 - diffMinutes} минут**`)
+          .setColor('E515BD')
+          .setDescription(`:money_with_wings: ${message.author}, **${commandText.alreadyClaimedError[0]}**. ${commandText.alreadyClaimedError[1]} **${diffHours}h ${60 - diffMinutes == 60 ? 0 : 60 - diffMinutes}m**`)
         await message.channel.send(embed);
       }
 
-    } catch {
+    } catch (err) {
+      console.log(`[${message.guild.name}][DAILY][ERROR]`, err);
       return;
     }
   }

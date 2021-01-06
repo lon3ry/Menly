@@ -7,15 +7,15 @@ module.exports = {
   description: 'Данная команда, показывает помощь по всем командам бота',
   minArgs: 0,
   maxArgs: 1,
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
       const commands = loadCommands();
 
       if (!args[0]) {
         let embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
+          .setColor('E515BD')
           .setTitle('Help')
-          .setFooter('Чтобы посмотреть подробную информацию напишите help <название команды>')
+          .setFooter(commandText.succes.footer)
         let text = {};
         for (const command of commands) {
           const mainCommand = typeof command.commands === 'string'
@@ -49,7 +49,7 @@ module.exports = {
           const usage = command.usage ? `${command.usage}` : '';
           let embed = new Discord.MessageEmbed()
             .setTitle('Help')
-            .setColor('0085FF')
+            .setColor('E515BD')
             .setDescription(`\`\`\`\n${mainCommand} ${usage}\`\`\`\n${description}`)
           await message.author.send(embed);
           await message.delete(message);

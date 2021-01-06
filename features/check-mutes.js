@@ -31,11 +31,12 @@ module.exports = bot => {
   checkMutes();
 
   bot.on('guildMemberAdd', async (member) => {
-    const isMuted = await MuteSchema.find({ userID: `${member.id}`, guildID: `${member.guild.id}` });
-    if (isMuted) {
-      const { muteRole: muteRoleId } = await GuildSchema.findOne({ guildID: `${member.guild.id}` });
-      const muteRole = member.guild.roles.cache.get(muteRoleId);
-      await member.roles.add(muteRole);
+    const isMuted = await MuteSchema.findOne({ userID: `${member.id}`, guildID: `${member.guild.id}`, active: true });
+    if (!isMuted) {
+      return;
     }
+    const { muteRole: muteRoleID } = await GuildSchema.findOne({ guildID: `${member.guild.id}` });
+    const muteRole = member.guild.roles.cache.get(muteRoleID);
+    await member.roles.add(muteRole);
   });
 }

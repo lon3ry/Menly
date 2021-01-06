@@ -5,27 +5,26 @@ module.exports = {
   commands: ['stats', 'statistic'],
   group: 'Stats',
   description: 'Отображает вашу статистику',
-  permissionError: 'недостаточно прав',
   minArgs: 0,
   maxArgs: 1,
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
       let member = message.mentions.members.first() || message.member;
-      const Stats = await MemberSchema.findOne({ userID: `${member.id}`, guildID: `${member.guild.id}` });
-      const Embed = new Discord.MessageEmbed()
+      const stats = await MemberSchema.findOne({ userID: `${member.id}`, guildID: `${member.guild.id}` });
+      const embed = new Discord.MessageEmbed()
         .setAuthor(member.displayName, member.user.displayAvatarURL({ dynamic: true }))
-        .setColor('0085FF')
-        .setTitle('Ваша статистика')
+        .setColor('E515BD')
+        .setTitle(commandText.succes.name)
         .addFields(
-          { name: '**:coin: Количество коинов:**', value: `${Stats.coins}`, inline: false },
-          { name: '**:watch: Часы в голосовых каналах:**', value: `${~~Stats.minVoice / 60}`, inline: false },
-          { name: '**:speech_balloon: Сообщений:**', value: `${Stats.messages}`, inline: false },
-          { name: '**:small_blue_diamond: Опыт:**', value: `${Stats.xp}`, inline: false },
-          { name: '**:military_medal: Уровень:**', value: `${Stats.level}`, inline: false },
-          { name: '**:chart_with_upwards_trend: Статус начисления:**', value: `${Stats.countStatus}`, inline: false }
+          { name: `**:coin: ${commandText.succes.fieldNames[0]}:**`, value: `${stats.coins}`, inline: false },
+          { name: `**:watch: ${commandText.succes.fieldNames[1]}:**`, value: `${Math.trunc(stats.minVoice / 60)}`, inline: false },
+          { name: `**:speech_balloon: ${commandText.succes.fieldNames[2]}:**`, value: `${stats.messages}`, inline: false },
+          { name: `**:small_blue_diamond: ${commandText.succes.fieldNames[3]}:**`, value: `${stats.xp}`, inline: false },
+          { name: `**:military_medal: ${commandText.succes.fieldNames[4]}:**`, value: `${stats.level}`, inline: false },
+          { name: `**:chart_with_upwards_trend: ${commandText.succes.fieldNames[5]}:**`, value: `${stats.countStatus}`, inline: false }
         )
         .setTimestamp()
-      await message.channel.send(Embed);
+      await message.channel.send(embed);
 
     } catch (err) {
       return;

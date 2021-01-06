@@ -18,14 +18,9 @@ const MuteSchema = new Schema({
         type: String,
         required: true,
     },
-    staffId: {
-        type: String,
-        required: true
-    },
     staffID: {
         type: String,
         required: false,
-        default: '123'
     },
     muteStarted: {
         type: Date,

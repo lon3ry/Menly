@@ -3,40 +3,46 @@ const Discord = require('discord.js');
 module.exports = {
   commands: ['ban', 'userban'],
   group: 'Moderation',
-  description: 'Банит участника на сервере',
-  permissionError: 'у вас недостаточно прав для вызова этой команды',
+  description: 'Bans member',
   usage: '<@member>',
-  minArgs: 0,
-  maxArgs: 0,
+  minArgs: 1,
+  maxArgs: 1,
   permissions: ['ADMINISTRATOR'],
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
       let target = message.mentions.users.first();
-      let targetMember = message.guild.members.cache.get(target.id);
-
+      
       if (!target) {
         await message.react('🚫');
         let embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setTitle('Блокировка')
-          .setDescription(`:no_entry_sign: ${author}, укажите пользователя, которого следует заблокировать`)
-          .setAuthor(target.displayName, target.user.displayAvatarURL({ dynamic: true }))
-          .setTimestamp()
-        await message.channel.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, ${commandText.errors.noTagUserError}`)
+        await message.channel.send(embed);
+        return;
       }
 
+      let targetMember = await message.guild.members.cache.get(target.id)
+      
+      if (!targetMember) {
+        let embed = new Discord.MessageEmbed()
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, ${commandText.errors.noMemberOnGuildError}`)
+        await message.channel.send(embed);
+        return;
+      }
+      
       await targetMember.ban();
+      await message.react('☑️');
       let embed = new Discord.MessageEmbed()
-        .setColor('0085FF')
-        .setTitle('Блокировка')
-        .setDescription(`Вы были заблокированы на сервере **${target.guild.name}** пользователем **${message.author}**`)
-        .setAuthor(target.displayName, target.user.displayAvatarURL({ dynamic: true }))
+        .setColor('E515BD')
+        .setTitle(commandText.succes.name)
+        .setDescription(`${commandText.succes.description[0]} **${targetMember.guild.name}**${commandText.succes.description[1]} **${message.author}**`)
+        .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
         .setTimestamp()
       await target.send(embed);
-      await message.react('☑️');
-      console.log(`[${message.guild.name}][BAN][SUCCES] banned ${target.displayName}`);
-
-    } catch {
+      console.log(`[${message.guild.name}][BAN][SUCCES] banned ${targetMember.displayName}`);
+    } catch (err) {
+      console.log(`[${message.guild.name}][BAN][ERROR]`, err);
       return;
     }
   }

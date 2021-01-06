@@ -4,12 +4,11 @@ const MemberSchema = require('../../schemas/member-schema.js');
 module.exports = {
   commands: ['send', 'sendCoins', 'coinsSend'],
   group: 'Economy',
-  description: 'Перечисление коинов на другой счёт',
+  description: 'Sending coins between members',
   usage: '<@member> <ammount>',
-  permissionError: 'недостаточно прав',
   minArgs: 2,
   maxArgs: 2,
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
 
       let ammount = Math.trunc(args[1]); // float to number
@@ -20,9 +19,9 @@ module.exports = {
       if (senderOldData.coins - ammount < 0) { // if sender doesnt have coins to send
         await message.react('🚫');
         const embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:no_entry_sign: ${message.author}, у вас недостаточно средств, чтобы осуществить перевод размером ${ammount}`)
-        await message.channel.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, ${commandText.noMoneyError[0]} **${ammount}** ${commandText.noMoneyError[1]}`)
+        await message.channel.send(embed);
         return;
       }
 
@@ -40,7 +39,8 @@ module.exports = {
       await message.react('☑️');
       console.log(`[${message.guild.name}][SEND][SUCCES] sended ${ammount} coins from ${message.member.displayName} to ${target.displayName}`);
 
-    } catch {
+    } catch (err) {
+      console.log(`[${message.guild.name}][SEND][ERROR]`, err);
       return;
     }
   }

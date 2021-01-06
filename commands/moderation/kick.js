@@ -3,37 +3,48 @@ const Discord = require('discord.js');
 module.exports = {
   commands: ['kick', 'userkick'],
   group: 'Moderation',
-  description: 'Выгоняет участника с сервера',
-  permissionError: 'у вас недостаточно прав для вызова этой команды',
+  description: 'Kicks member',
   usage: '<@member>',
-  minArgs: 0,
-  maxArgs: 0,
+  minArgs: 1,
+  maxArgs: 1,
   permissions: ['ADMINISTRATOR'],
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
-      let target = message.mentions.members.first();
+      let target = message.mentions.users.first();
 
       if (!target) {
         await message.react('🚫');
         let embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:no_entry_sign: **Укажите участника**, которого следует **кикнуть**`)
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, **${commandText.errors.noTagUserError}**`)
         await message.channel.send(embed);
         return;
       }
 
+      const targetMember = message.guild.members.cache.get(target.id);
+
+      if (!targetMember) {
+        let embed = new Discord.MessageEmbed()
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, **${commandText.noMemberOnGuildError[0]}**`)
+        await message.channel.send(embed);
+        return;
+      }
+      
+      await targetMember.kick();
       let embed = new Discord.MessageEmbed()
-        .setColor('0085FF')
-        .setTitle('Блокировка')
-        .setDescription(`Вы были исключены с сервера **${target.guild.name}** пользователем **${message.author}**`)
-        .setAuthor(target.displayName, target.user.displayAvatarURL({ dynamic: true }))
+        .setColor('E515BD')
+        .setTitle(commandText.succes.name)
+        .setDescription(`${commandText.succesKick[0]} **${targetMember.guild.name}**${commandText.succesKick[1]} **${message.author}**`)
+        .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
         .setTimestamp()
       await target.send(embed);
-      await target.kick();
+      
       await message.react('☑️');
-      console.log(`[${message.guild.name}][KICK][SUCCES] kicked ${target.displayName}`);
+      console.log(`[${message.guild.name}][KICK][SUCCES] kicked ${targetMember.displayName}`);
 
-    } catch {
+    } catch (err) {
+      console.log(`[${message.guild.name}][KICK][ERROR]`, err);
       return;
     }
   }

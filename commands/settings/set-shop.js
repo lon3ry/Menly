@@ -2,23 +2,32 @@ const Discord = require('discord.js');
 const RolesShopSchema = require('../../schemas/roles-shop-schema.js');
 
 module.exports = {
-  commands: ['setshop', 'set-shop'],
+  commands: ['set-shop', 'setshop'],
   group: 'Settings',
   description: 'Изменяет настройки магазина коинов',
   usage: 'role <@role> <price>\nsetshop description <text>\nsetshop removeroles <true / false>',
-  permissionError: 'недостаточно прав',
   minArgs: 3,
   maxArgs: null,
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
 
       const category = args[0];
       if (category == 'role') {
         const data = await RolesShopSchema.findOne({ guildID: `${message.guild.id}` });
-        if (data != null && data.roles.length + 1 > 10) {
+        
+        if (data == null) {
+          await message.react('🚫');
           let embed = new Discord.MessageEmbed()
-            .setColor('0085FF')
-            .setDescription(`:no_entry_sign: ${message.author}, **установлено максимальное количество ролей в магазине!** Вы можете удалить старые роли и добавить новые с помощью команд категории \`\`shop\`\``)
+            .setColor('E515BD')
+            .setDescription(`:no_entry_sign: ${message.author}, **${commandText.noDataFoundError}**`)
+          await message.author.send(embed);
+        }
+        
+        if (data != null && data.roles.length + 1 > 10) {
+          await message.react('🚫');
+          let embed = new Discord.MessageEmbed()
+            .setColor('E515BD')
+            .setDescription(`:no_entry_sign: ${message.author}, **${commandText.maxShopRolesError}**`)
           await message.author.send(embed);
           return;
         }
@@ -46,6 +55,7 @@ module.exports = {
         console.log(`[${message.guild.name}][SET-SHOP][SUCCES] description set to ${rolesShopText}`, result);
 
       } else if (category == 'removeroles') {
+        
         const status = args[1];
         const result = await RolesShopSchema.findOneAndUpdate({ guildID: `${message.guild.id}` }, {
           $set: {
@@ -58,7 +68,8 @@ module.exports = {
       }
       await message.react('☑️');
       
-    } catch {
+    } catch (err) {
+      console.log(`[${message.guild.name}][SET-SHOP][ERROR]`, err);
       return;
     }
   }

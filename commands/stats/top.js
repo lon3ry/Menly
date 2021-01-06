@@ -6,10 +6,9 @@ module.exports = {
   group: 'Stats',
   description: 'Отображает лидеров по статистике в заданной категории',
   usage: '<category>',
-  permissionError: 'недостаточно прав',
   minArgs: 1,
   maxArgs: 1,
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
       let category = args[0];
       if (category == 'voice') {
@@ -19,11 +18,11 @@ module.exports = {
       sort[category] = -1;
       const stats = await MemberSchema.find({ guildID: `${message.guild.id}` }, null, { sort: sort, limit: 10 });
       if (stats.length < 10) {
-        await message.delete(message);
+        await message.react('🚫');
         let embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:no_entry_sign: ${message.author}, список лидеров по статистике ещё не сформирован`)
-        await message.channel.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, **${commandText.noLeadersError}**`)
+        await message.channel.send(embed);
         return;
       }
       let usersStats = [];
@@ -41,14 +40,14 @@ module.exports = {
         }
       }
       let embedName = new Map()
-        .set('minVoice', 'Топ участников по часам в голосовых каналах')
-        .set('messages', 'Топ участников по количеству сообщений')
-        .set('xp', 'Топ участников по количеству опыта')
-        .set('coins', 'Топ участников по количеству коинов')
+        .set('minVoice', `${commandText.succes.titleNames[0]}`)
+        .set('messages', `${commandText.succes.titleNames[1]}`)
+        .set('xp', `${commandText.succes.titleNames[2]}`)
+        .set('coins', `${commandText.succes.titleNames[3]}`)
       let embed = new Discord.MessageEmbed()
-        .setColor('0085FF')
+        .setColor('E515BD')
         .setDescription(`**:first_place: ${usersNames[0]}: ${usersStats[0]}\n \n:second_place: ${usersNames[1]}: ${usersStats[1]}\n \n:third_place: ${usersNames[2]}: ${usersStats[2]}**\n \n:medal: ${usersNames[3]}: ${usersStats[3]}\n \n:medal: ${usersNames[4]}: ${usersStats[4]}\n \n:medal: ${usersNames[5]}: ${usersStats[5]}\n \n:medal: ${usersNames[6]}: ${usersStats[6]}\n \n:medal: ${usersNames[7]}: ${usersStats[7]}\n \n:medal: ${usersNames[8]}: ${usersStats[8]}\n \n:medal: ${usersNames[9]}: ${usersStats[9]}`)
-        .setAuthor(embedName.get(category), bot.user.displayAvatarURL({ dynamic: true }))
+        .setTitle(embedName.get(category))
         .setTimestamp()
       await message.channel.send(embed);
       

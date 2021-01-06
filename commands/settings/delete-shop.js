@@ -2,34 +2,35 @@ const Discord = require('discord.js');
 const RolesShopSchema = require('../../schemas/roles-shop-schema.js');
 
 module.exports = {
-  commands: ['deleteshop', 'delete-shop', 'delete_shop'],
+  commands: ['delete-shop', 'deleteshop', 'delete_shop'],
   group: 'Settings',
   description: 'Изменяет настройки магазина коинов',
-  usage: 'role <@role> <price>\nsetshop description <text>\nsetshop removeroles <true / false>',
-  permissionError: 'недостаточно прав',
+  usage: 'role <@role> <price>\nsetshop description <text>\nsetshop removeroles <status: true / false>',
   minArgs: 1,
   maxArgs: 2,
-  callback: async (message, args, text, bot) => {
+  callback: async (message, args, text, commandText, bot) => {
     try {
       
       const category = args[0];
       const data = await RolesShopSchema.findOne({ guildID: `${message.guild.id}` });
       
       if (data == null) {
+        await message.react('🚫');
         const embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:no_entry_sign: ${message.author}, **магазин ролей ещё не создан!**`)
+          .setColor('E515BD')
+          .setDescription(`:no_entry_sign: ${message.author}, **${commandText.noDataFoundError}**`)
         await message.channel.send(embed);
         return;
       }
 
       if (category == 'role') {
         if (args[1] == undefined) {
+          await message.react('🚫');
           const embed = new Discord.MessageEmbed()
             .setAuthor(guild.name, guild.iconURL())
-            .setColor('0085FF')
-            .setDescription(`:no_entry_sign: ${message.author} укажите роль, которую нужно удалить с магазина`)
-          await message.channel.send(embed).then(message => { message.delete({ timeout: 5 * 1000 }) });
+            .setColor('E515BD')
+            .setDescription(`:no_entry_sign: ${message.author} ${commandText.errors.noTagRoleError}`)
+          await message.channel.send(embed);
           return;
         }
 
@@ -51,19 +52,12 @@ module.exports = {
         });
 
         await RolesShopSchema.deleteOne({ guildID: `${message.guild.id}`} );
-        const embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:ballot_box_with_check: Роль ${roleToDelete} успешно удалена с магазина`)
-        await message.channel.send(embed);
-
+        await message.react('☑️');
         console.log(`[${message.guild.name}][DELETE-SHOP][SUCCES] role with name ${roleToDelete.name} deleted from shop`);
 
       } else if (category == 'all') {
         await RolesShopSchema.deleteOne({ guildID: `${message.guild.id}`} );
-        const embed = new Discord.MessageEmbed()
-          .setColor('0085FF')
-          .setDescription(`:ballot_box_with_check: ${message.author}, магазин успешно удалён`)
-        await message.channel.send(embed);
+        await message.react('☑️');
         console.log(`[${message.guild.name}][DELETE-SHOP][SUCCES] all shop deleted`);
       }
 
