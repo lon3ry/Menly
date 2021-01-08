@@ -3,7 +3,7 @@
 This is a Discord bot for public-using on your servers!
 
 ---
-##Features
+## Features
 - Economy system
 - Counting time in voice
 - Roles-shop 
