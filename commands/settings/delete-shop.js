@@ -4,7 +4,7 @@ const RolesShopSchema = require('../../schemas/roles-shop-schema.js');
 module.exports = {
   commands: ['delete-shop', 'deleteshop', 'delete_shop'],
   group: 'Settings',
-  description: 'Изменяет настройки магазина коинов',
+  description: 'Deletes role-shop settings',
   usage: 'role <@role> <price>\nsetshop description <text>\nsetshop removeroles <status: true / false>',
   minArgs: 1,
   maxArgs: 2,

@@ -5,7 +5,7 @@ const CounterSchema = require('../../schemas/count-channel-schema.js');
 module.exports = {
   commands: ['set-counter', 'setcounter', 'set_counter'],
   group: 'Settings',
-  description: 'Изменение настроек канала со статистикой',
+  description: 'Editing statistic\'s channel settings',
   usage: 'name <name>',
   minArgs: 2,
   maxArgs: null,

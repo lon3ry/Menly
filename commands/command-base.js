@@ -54,6 +54,7 @@ module.exports = (bot, commandOptions) => {
     minArgs = 0,
     maxArgs = null,
     permissions = [],
+    botPermissions = [],
     callback
   } = commandOptions;
 
@@ -98,17 +99,7 @@ module.exports = (bot, commandOptions) => {
           }
         }
 
-        const botMember = await guild.members.cache.get(bot.user.id);
         for (const permission of permissions) {
-          await message.react('🚫');
-          if (!botMember.hasPermission(permission)) {
-            // bot haven't permission ${permission}. Please add role with this permission to bot if you want use command ${alias}
-            let embed = new Discord.MessageEmbed()
-              .setColor('E515BD')
-              .setDescription(`:no_entry_sign: ${guild.owner}, **${errorsText.botPermissionError[0]}** \`\`${permission}\`\`. ${errorsText.botPermissionError[1]} \`\`${alias}\`\``)
-            await guild.owner.send(embed)
-            return;
-          }
           if (!member.hasPermission(permission)) {
             try {
               await message.react('🚫');

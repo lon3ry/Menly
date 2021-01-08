@@ -17,6 +17,7 @@ module.exports = {
   permissions: ['ADMINISTRATOR'],
   callback: async (message, args, text, commandText, bot) => {
     try {
+      
       let target = message.mentions.members.first();
       let category = args[1];
       let ammount = Math.trunc(args[2]);

@@ -16,7 +16,7 @@ const getEmoji = async (emojiText, guild) => {
 module.exports = {
   commands: ['setpoll', 'set-poll', 'set_poll'],
   group: 'Settings',
-  description: 'Изменение настроек канала с опросами',
+  description: 'Edititng poll\'s settings',
   usage: '<channel> <emoji>',
   minArgs: 2,
   maxArgs: 2,

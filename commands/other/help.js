@@ -4,11 +4,12 @@ const loadCommands = require('../load-commands.js');
 module.exports = {
   commands: 'help',
   group: 'Other',
-  description: 'Данная команда, показывает помощь по всем командам бота',
+  description: 'Gives information about command',
   minArgs: 0,
   maxArgs: 1,
   callback: async (message, args, text, commandText, bot) => {
     try {
+      
       const commands = loadCommands();
 
       if (!args[0]) {

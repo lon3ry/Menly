@@ -10,6 +10,7 @@ module.exports = {
   permissions: ['ADMINISTRATOR'],
   callback: async (message, args, text, commandText, bot) => {
     try {
+      
       let target = message.mentions.users.first();
 
       if (!target) {

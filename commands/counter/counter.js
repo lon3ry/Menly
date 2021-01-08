@@ -16,7 +16,7 @@ module.exports = {
         type: 'voice'
       });
 
-      const oldCounterData = await CounterSchema.findOne({guildID: `${guild.id}`}); // find old data
+      const oldCounterData = await CounterSchema.findOne({ guildID: `${guild.id}` }); // find old data
 
       if (!oldCounterData) { // if old data, update them, else - create
         const counterData = new CounterSchema({

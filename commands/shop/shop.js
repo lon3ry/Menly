@@ -4,7 +4,7 @@ const RolesShopSchema = require('../../schemas/roles-shop-schema.js');
 module.exports = {
   commands: ['shop', 'roles-shop', 'rolesshop'],
   group: 'Shop',
-  description: 'Магазин ролей',
+  description: 'Role-shop',
   minArgs: 0,
   maxArgs: 0,
   callback: async (message, args, text, commandText, bot) => {

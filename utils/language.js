@@ -17,7 +17,8 @@ const getErrorsText = (language) => {
   return translations[language]['errors'];
 }
 
+
 module.exports = {
   getCommandText: getCommandText,
-  getErrorsText: getErrorsText
+  getErrorsText: getErrorsText,
 }

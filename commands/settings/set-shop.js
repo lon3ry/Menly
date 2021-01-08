@@ -2,9 +2,9 @@ const Discord = require('discord.js');
 const RolesShopSchema = require('../../schemas/roles-shop-schema.js');
 
 module.exports = {
-  commands: ['set-shop', 'setshop'],
+  commands: ['set-shop', 'setshop', 'set-roles-shop'],
   group: 'Settings',
-  description: 'Изменяет настройки магазина коинов',
+  description: 'Editing roles-shop\'s settings',
   usage: 'role <@role> <price>\nsetshop description <text>\nsetshop removeroles <true / false>',
   minArgs: 3,
   maxArgs: null,

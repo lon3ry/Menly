@@ -32,7 +32,7 @@ module.exports = {
       } else {
         await message.react('🚫');
         const diffTime = Math.abs(data.nextAwardTime.getTime() - timeNow.getTime());
-        const diffMinutes = Math.round(Math.round(diffTime / (1000 * 60 * 60)) * 60 - diffTime / (1000 * 60)); // getting minutes
+        const diffMinutes = Math.floor(Math.floor(diffTime / (1000 * 60 * 60)) * 60 - diffTime / (1000 * 60)); // getting minutes
         const diffHours = Math.trunc((diffTime / (1000 * 60) - diffMinutes) / 60); // getting hours
         const embed = new Discord.MessageEmbed()
           .setColor('E515BD')

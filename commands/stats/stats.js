@@ -4,11 +4,12 @@ const MemberSchema = require('../../schemas/member-schema.js');
 module.exports = {
   commands: ['stats', 'statistic'],
   group: 'Stats',
-  description: 'Отображает вашу статистику',
+  description: 'Displays your statistic',
   minArgs: 0,
   maxArgs: 1,
   callback: async (message, args, text, commandText, bot) => {
     try {
+      
       let member = message.mentions.members.first() || message.member;
       const stats = await MemberSchema.findOne({ userID: `${member.id}`, guildID: `${member.guild.id}` });
       const embed = new Discord.MessageEmbed()

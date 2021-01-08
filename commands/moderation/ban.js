@@ -10,6 +10,7 @@ module.exports = {
   permissions: ['ADMINISTRATOR'],
   callback: async (message, args, text, commandText, bot) => {
     try {
+
       let target = message.mentions.users.first();
       
       if (!target) {
@@ -41,6 +42,7 @@ module.exports = {
         .setTimestamp()
       await target.send(embed);
       console.log(`[${message.guild.name}][BAN][SUCCES] banned ${targetMember.displayName}`);
+      
     } catch (err) {
       console.log(`[${message.guild.name}][BAN][ERROR]`, err);
       return;

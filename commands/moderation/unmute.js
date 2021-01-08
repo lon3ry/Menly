@@ -12,6 +12,7 @@ module.exports = {
   permissions: ['ADMINISTRATOR'],
   callback: async (message, args, text, commandText, bot) => {
     try {
+      
       const { guild, author, member } = message;
       const target = message.mentions.members.first();
       

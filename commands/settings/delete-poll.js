@@ -16,7 +16,7 @@ const getEmojiID = async (emojiText, guild) => {
 module.exports = {
   commands: ['delete-poll', 'deletepoll', 'delete_poll'],
   group: 'Settings',
-  description: 'Удаление настроек канала с опросами',
+  description: 'Deletes poll settings',
   usage: '<channel> <emoji>\ndeletepoll all',
   minArgs: 2,
   maxArgs: 2,

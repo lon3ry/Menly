@@ -10,8 +10,9 @@ module.exports = {
   permissions: ['MANAGE_MESSAGES'],
   callback: async (message, args, text, commandText, bot) => {
     try {
-      const ammount = parseInt(args[0]) + 1;
 
+      const ammount = Math.trunc(args[0]) + 1;
+      
       if (ammount > 100) {
         await message.react('🚫');
         let embed = new Discord.MessageEmbed()

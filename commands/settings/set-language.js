@@ -14,7 +14,6 @@ module.exports = {
     try {
 
       const language = args[0];
-      console.log(language, languages, languages.includes(language));
 
       if (!languages.includes(language)) {
         await message.react('🚫');

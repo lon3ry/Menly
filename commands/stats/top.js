@@ -4,12 +4,13 @@ const MemberSchema = require('../../schemas/member-schema.js');
 module.exports = {
   commands: ['top', 'leaderboard', 'list'],
   group: 'Stats',
-  description: 'Отображает лидеров по статистике в заданной категории',
+  description: 'Displays leaders of statistic in category',
   usage: '<category>',
   minArgs: 1,
   maxArgs: 1,
   callback: async (message, args, text, commandText, bot) => {
     try {
+      
       let category = args[0];
       if (category == 'voice') {
         category = 'minVoice'
