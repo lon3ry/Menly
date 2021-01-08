@@ -13,6 +13,10 @@ const getCommandText = (language, commandName) => {
   }
 }
 
+const getFeatureText = (language, featureName) => {
+  return translations[language]['features'][featureName];
+}
+
 const getErrorsText = (language) => {
   return translations[language]['errors'];
 }
@@ -20,5 +24,6 @@ const getErrorsText = (language) => {
 
 module.exports = {
   getCommandText: getCommandText,
-  getErrorsText: getErrorsText,
+  getFeatureText: getFeatureText,
+  getErrorsText: getErrorsText
 }

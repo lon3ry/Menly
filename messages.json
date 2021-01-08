@@ -418,6 +418,14 @@
             "description": "**Hi!** Thanks for your ideas for bot. I added many your ideas, waiting more!\n \n**Added:**\n**-**  Roles-shop\n**-**  Counter members channel\n**-** Channel polls\n**-** Command ``daily`` with everyday award\n**-** Command ``duels`` to play with your friends\n**-** English language support"
           }
         }
+      },
+      "features": {
+        "welcome-message": {
+          "succes": {
+            "name": "Thanks for invited me!",
+            "description": "Hi, I'm **Menly**. My prefix is ``!``, but you can change it with command ``setprefix``\n \n**Features**\n**-** Count time in voice\n**-** Economic system\n**-** Anti-invite system\n**-** Useful moderation commands\n**-** Channel polls\n**-** And more!\n \nSee all my commands ``!help``"
+          }
+        }
       }
     }
   }

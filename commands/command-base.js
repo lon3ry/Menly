@@ -74,7 +74,7 @@ module.exports = (bot, commandOptions) => {
   bot.on('message', async (message) => {
     const { member, content, guild } = message;
 
-    if (message.channel.type !== 'text') {
+    if (message.channel.type == 'dm') {
       return;
     }
 
@@ -87,6 +87,7 @@ module.exports = (bot, commandOptions) => {
         const adminGroups = ['Moderation', 'Embeds', 'Settings', 'Shop'];
         if (adminGroups.indexOf(group) == -1 && commandChannel != `${message.channel.id}` && commandChannel != 'undefined') {
           try {
+            await message.react('🚫');
             const channel = await guild.channels.cache.get(commandChannel);
             let embed = new Discord.MessageEmbed()
               .setColor('E515BD')
