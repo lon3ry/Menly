@@ -219,7 +219,7 @@
         "noTagRoleError": "tag a role!",
         "noTagChannelError": "tag a channel!",
         "ammountZeroError": "ammount must be bigger and not equal 0",
-        "permissionError": "you don't have permission/permissions to use this command",
+        "memberPermissionError": "you don't have permission/permissions to use this command",
         "syntaxError": [
           "**incorrect syntax!** Write",
           "to use this this command"
